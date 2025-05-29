@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'guru.qa'
-sourceCompatibility = '17'
+sourceCompatibility = '21'
 
 subprojects {
     repositories {
@@ -24,7 +24,7 @@ allprojects {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
+            languageVersion = JavaLanguageVersion.of(21)
         }
     }
 }
@@ -50,8 +50,8 @@ subprojects {
         mockitoVersion = '5.12.0'
 
         dockerImage = System.getProperty("os.arch") == "aarch64" || System.getProperty("os.arch") == "arm64"
-                ? "arm64v8/eclipse-temurin:17-jdk"
-                : "eclipse-temurin:17-jdk"
+                ? "arm64v8/eclipse-temurin:21-jdk"
+                : "eclipse-temurin:21-jdk"
         dockerArch = System.getProperty("os.arch") == "aarch64" || System.getProperty("os.arch") == "arm64"
                 ? "arm64"
                 : "amd64"
