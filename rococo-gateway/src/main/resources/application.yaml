@@ -44,6 +44,11 @@ spring:
     show-sql: false
     generate-ddl: true
     open-in-view: false
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      group-id: 'userdata'
+      auto-offset-reset: earliest
 
 logging:
   level:
@@ -57,6 +62,11 @@ spring:
   config:
     activate:
       on-profile: 'local'
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    consumer:
+      group-id: 'userdata'
+      auto-offset-reset: earliest
   security:
     oauth2:
       resourceserver:
