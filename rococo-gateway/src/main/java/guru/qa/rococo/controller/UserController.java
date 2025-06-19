@@ -31,7 +31,7 @@ public class UserController {
     @PatchMapping
     public UserJson updateUser(@AuthenticationPrincipal Jwt principal, @RequestBody UserJson user) {
         String username = principal.getClaim("sub");
-        return userService.update(username, user.addUsername(username));
+        return userService.update(user.addUsername(username));
     }
 
 

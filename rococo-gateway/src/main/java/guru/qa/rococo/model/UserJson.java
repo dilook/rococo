@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import guru.qa.rococo.data.UserEntity;
 import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Size;
 
 import java.nio.charset.StandardCharsets;
@@ -22,7 +21,7 @@ public record UserJson(
         @JsonProperty("lastname")
         @Size(max = 30, message = "Last name can`t be longer than 30 characters")
         String lastname,
-        @JsonProperty("photo")
+        @JsonProperty("avatar")
         @Size(max = 1024 * 1024, message = "Photo can`t be bigger than 1MB")
         String avatar
 ) {
