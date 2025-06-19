@@ -12,8 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -21,28 +20,28 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Profile({"local"})
 public class SecurityConfigLocal {
 
-  private final CorsCustomizer corsCustomizer;
+    private final CorsCustomizer corsCustomizer;
 
-  @Autowired
-  public SecurityConfigLocal(CorsCustomizer corsCustomizer) {
-    this.corsCustomizer = corsCustomizer;
-  }
+    @Autowired
+    public SecurityConfigLocal(CorsCustomizer corsCustomizer) {
+        this.corsCustomizer = corsCustomizer;
+    }
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    corsCustomizer.corsCustomizer(http);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        corsCustomizer.corsCustomizer(http);
 
-    http.csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(customizer ->
-            customizer.requestMatchers(
-                    antMatcher("/api/session"),
-                    antMatcher("/api/artists/**"),
-                    antMatcher("/api/museum/**"),
-                    antMatcher("/api/painting/**"))
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-        ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-    return http.build();
-  }
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(customizer ->
+                        customizer.requestMatchers(
+                                        PathPatternRequestMatcher.withDefaults().matcher("/api/session"),
+                                        PathPatternRequestMatcher.withDefaults().matcher("/api/artists/**"),
+                                        PathPatternRequestMatcher.withDefaults().matcher("/api/museum/**"),
+                                        PathPatternRequestMatcher.withDefaults().matcher("/api/painting/**"))
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
+                ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
 }
