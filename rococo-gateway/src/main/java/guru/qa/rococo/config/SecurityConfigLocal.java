@@ -35,7 +35,7 @@ public class SecurityConfigLocal {
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(customizer ->
             customizer.requestMatchers(
-                    antMatcher("/api/session/current"),
+                    antMatcher("/api/session"),
                     antMatcher("/api/artists/**"),
                     antMatcher("/api/museum/**"),
                     antMatcher("/api/painting/**"))

@@ -16,7 +16,7 @@ import java.util.Date;
 @RequestMapping("/api/session")
 public class SessionController {
 
-  @GetMapping("/current")
+  @GetMapping
   public SessionJson session(@AuthenticationPrincipal Jwt principal) {
     if (principal != null) {
       return new SessionJson(
