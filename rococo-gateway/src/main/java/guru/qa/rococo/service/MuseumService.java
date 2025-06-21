@@ -5,6 +5,7 @@ import guru.qa.rococo.data.MuseumEntity;
 import guru.qa.rococo.data.repository.CountryRepository;
 import guru.qa.rococo.data.repository.MuseumRepository;
 import guru.qa.rococo.ex.NotFoundException;
+import guru.qa.rococo.ex.RequiredParamException;
 import guru.qa.rococo.model.MuseumJson;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,10 +73,10 @@ public class MuseumService {
                         .orElseThrow(() -> new NotFoundException("Country not found with id: " + museumJson.geo().country().id()));
                 museumEntity.setCountry(countryEntity);
             } else {
-                throw new IllegalArgumentException("Country is required for a museum");
+                throw new RequiredParamException("Country is required for a museum");
             }
         } else {
-            throw new IllegalArgumentException("Geo information is required for a museum");
+            throw new RequiredParamException("Geo information is required for a museum");
         }
 
         return MuseumJson.fromEntity(museumRepository.save(museumEntity));
