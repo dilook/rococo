@@ -2,6 +2,7 @@ package guru.qa.rococo.controller;
 
 import guru.qa.rococo.model.PaintingJson;
 import guru.qa.rococo.service.PaintingService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -43,12 +44,12 @@ public class PaintingController {
     }
 
     @PatchMapping
-    PaintingJson updatePainting(@RequestBody PaintingJson paintingJson) {
+    PaintingJson updatePainting(@RequestBody @Valid PaintingJson paintingJson) {
         return paintingService.updatePainting(paintingJson);
     }
 
     @PostMapping
-    PaintingJson createPainting(@RequestBody PaintingJson paintingJson) {
+    PaintingJson createPainting(@RequestBody @Valid PaintingJson paintingJson) {
         return paintingService.createPainting(paintingJson);
     }
 }

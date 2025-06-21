@@ -2,6 +2,7 @@ package guru.qa.rococo.controller;
 
 import guru.qa.rococo.model.MuseumJson;
 import guru.qa.rococo.service.MuseumService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -38,12 +39,12 @@ public class MuseumController {
     }
 
     @PatchMapping
-    MuseumJson updateMuseum(@RequestBody MuseumJson museumJson) {
+    MuseumJson updateMuseum(@RequestBody @Valid MuseumJson museumJson) {
         return museumService.updateMuseum(museumJson);
     }
 
     @PostMapping
-    MuseumJson createMuseum(@RequestBody MuseumJson museumJson) {
+    MuseumJson createMuseum(@RequestBody @Valid MuseumJson museumJson) {
         return museumService.createMuseum(museumJson);
     }
 }

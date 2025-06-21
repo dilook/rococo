@@ -2,6 +2,7 @@ package guru.qa.rococo.controller;
 
 import guru.qa.rococo.model.ArtistJson;
 import guru.qa.rococo.service.ArtistService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -38,12 +39,12 @@ public class ArtistController {
     }
 
     @PatchMapping
-    ArtistJson updateArtist(@RequestBody ArtistJson artistJson) {
+    ArtistJson updateArtist(@RequestBody @Valid ArtistJson artistJson) {
         return artistService.updateArtist(artistJson);
     }
 
     @PostMapping
-    ArtistJson createArtist(@RequestBody ArtistJson artistJson) {
+    ArtistJson createArtist(@RequestBody @Valid ArtistJson artistJson) {
         return artistService.createArtist(artistJson);
     }
 }

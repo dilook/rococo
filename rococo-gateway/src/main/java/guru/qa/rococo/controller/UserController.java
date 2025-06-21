@@ -3,6 +3,7 @@ package guru.qa.rococo.controller;
 
 import guru.qa.rococo.model.UserJson;
 import guru.qa.rococo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class UserController {
 
 
     @PatchMapping
-    public UserJson updateUser(@AuthenticationPrincipal Jwt principal, @RequestBody UserJson user) {
+    public UserJson updateUser(@AuthenticationPrincipal Jwt principal, @Valid @RequestBody UserJson user) {
         String username = principal.getClaim("sub");
         return userService.update(user.addUsername(username));
     }
