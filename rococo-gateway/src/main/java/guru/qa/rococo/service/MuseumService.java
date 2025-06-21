@@ -23,8 +23,11 @@ public class MuseumService {
         this.countryRepository = countryRepository;
     }
 
-    public Page<MuseumJson> getAllMuseum(Pageable pageable) {
-        return museumRepository.findAll(pageable).map(MuseumJson::fromEntity);
+    public Page<MuseumJson> getAllMuseum(Pageable pageable, String title) {
+        Page<MuseumEntity> paintings = title == null
+                ? museumRepository.findAll(pageable)
+                : museumRepository.findByTitleContainingIgnoreCase(title, pageable);
+        return paintings.map(MuseumJson::fromEntity);
     }
 
     public MuseumJson getMuseumById(UUID id) {

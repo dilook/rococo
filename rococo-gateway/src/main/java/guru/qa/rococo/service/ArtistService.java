@@ -19,8 +19,11 @@ public class ArtistService {
         this.artistRepository = artistRepository;
     }
 
-    public Page<ArtistJson> getAllArtist(Pageable pageable) {
-        return artistRepository.findAll(pageable).map(ArtistJson::fromEntity);
+    public Page<ArtistJson> getAllArtist(Pageable pageable, String name) {
+        Page<ArtistEntity> paintings = name == null
+                ? artistRepository.findAll(pageable)
+                : artistRepository.findByNameContainingIgnoreCase(name, pageable);
+        return paintings.map(ArtistJson::fromEntity);
     }
 
     public ArtistJson getArtistById(UUID id) {
