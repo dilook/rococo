@@ -35,7 +35,7 @@ public class SecurityConfigLocal {
                 .authorizeHttpRequests(customizer ->
                         customizer.requestMatchers(
                                         PathPatternRequestMatcher.withDefaults().matcher("/api/session"),
-                                        PathPatternRequestMatcher.withDefaults().matcher("/api/artists/**"),
+                                        PathPatternRequestMatcher.withDefaults().matcher("/api/artist/**"),
                                         PathPatternRequestMatcher.withDefaults().matcher("/api/museum/**"),
                                         PathPatternRequestMatcher.withDefaults().matcher("/api/painting/**"))
                                 .permitAll()

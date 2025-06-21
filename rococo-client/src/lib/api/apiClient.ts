@@ -178,7 +178,7 @@ const commonFetch = async (
         }
         const data = await response.json();
         if (!response.ok) {
-            const errorText = data?.errors.join(". ");
+            const errorText = data?.detail;
             return {
                 data: undefined,
                 error:`${errorText ?? "Что-то пошло не так"}`
