@@ -36,11 +36,11 @@ public class PaintingEntity {
     private String description;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "artist_id", nullable = false)
     private ArtistEntity artist;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "museum_id")
     private MuseumEntity museum;
 

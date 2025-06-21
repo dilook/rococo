@@ -46,7 +46,7 @@ public class MuseumEntity {
     private byte[] photo;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "country_id", nullable = false)
     private CountryEntity country;
 

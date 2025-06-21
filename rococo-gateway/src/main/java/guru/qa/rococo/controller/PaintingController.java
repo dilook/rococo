@@ -6,8 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/painting")
@@ -22,5 +28,25 @@ public class PaintingController {
     @GetMapping
     Page<PaintingJson> getAllPainting(@PageableDefault Pageable pageable) {
         return paintingService.getAllPainting(pageable);
+    }
+
+    @GetMapping("/{id}")
+    PaintingJson getPaintingById(@PathVariable UUID id) {
+        return paintingService.getPaintingById(id);
+    }
+
+    @GetMapping("/author/{id}")
+    Page<PaintingJson> getPaintingsByArtistId(@PathVariable UUID id, @PageableDefault Pageable pageable) {
+        return paintingService.getPaintingsByArtistId(id, pageable);
+    }
+
+    @PatchMapping
+    PaintingJson updatePainting(@RequestBody PaintingJson paintingJson) {
+        return paintingService.updatePainting(paintingJson);
+    }
+
+    @PostMapping
+    PaintingJson createPainting(@RequestBody PaintingJson paintingJson) {
+        return paintingService.createPainting(paintingJson);
     }
 }
