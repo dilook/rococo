@@ -27,8 +27,11 @@ public class PaintingService {
         this.museumRepository = museumRepository;
     }
 
-    public Page<PaintingJson> getAllPainting(Pageable pageable) {
-        return paintingRepository.findAll(pageable).map(PaintingJson::fromEntity);
+    public Page<PaintingJson> getAllPainting(Pageable pageable, String title) {
+        Page<PaintingEntity> paintings = title == null
+                ? paintingRepository.findAll(pageable)
+                : paintingRepository.findByTitleContainingIgnoreCase(title, pageable);
+        return paintings.map(PaintingJson::fromEntity);
     }
 
     public PaintingJson getPaintingById(UUID id) {
@@ -47,7 +50,7 @@ public class PaintingService {
 
         paintingEntity.setTitle(paintingJson.title());
         paintingEntity.setDescription(paintingJson.description());
-        paintingEntity.setContent(paintingJson.content() != null ? paintingJson.content().getBytes(StandardCharsets.UTF_8): null);
+        paintingEntity.setContent(paintingJson.content() != null ? paintingJson.content().getBytes(StandardCharsets.UTF_8) : null);
 
         if (paintingJson.artist() != null) {
             ArtistEntity artistEntity = artistRepository.findById(paintingJson.artist().id())
@@ -68,7 +71,7 @@ public class PaintingService {
         PaintingEntity paintingEntity = new PaintingEntity();
         paintingEntity.setTitle(paintingJson.title());
         paintingEntity.setDescription(paintingJson.description());
-        paintingEntity.setContent(paintingJson.content() != null ? paintingJson.content().getBytes(StandardCharsets.UTF_8): null);
+        paintingEntity.setContent(paintingJson.content() != null ? paintingJson.content().getBytes(StandardCharsets.UTF_8) : null);
 
         if (paintingJson.artist() != null) {
             ArtistEntity artistEntity = artistRepository.findById(paintingJson.artist().id())
@@ -78,7 +81,7 @@ public class PaintingService {
             throw new IllegalArgumentException("Artist is required for a painting");
         }
 
-        if (paintingJson.museum() != null) {
+        if (paintingJson.museum() != null && paintingJson.museum().id() != null) {
             MuseumEntity museumEntity = museumRepository.findById(paintingJson.museum().id())
                     .orElseThrow(() -> new IllegalArgumentException("Museum not found with id: " + paintingJson.museum().id()));
             paintingEntity.setMuseum(museumEntity);

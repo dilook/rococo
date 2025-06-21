@@ -15,14 +15,14 @@ public record PaintingJson(
         ArtistJson artist
 ) {
 
-public static @Nonnull PaintingJson fromEntity(@Nonnull PaintingEntity entity) {
-    return new PaintingJson(
-            entity.getId(),
-            entity.getTitle(),
-            entity.getDescription(),
-            entity.getContent() != null && entity.getContent().length > 0 ? new String(entity.getContent(), StandardCharsets.UTF_8) : null,
-            MuseumJson.fromEntity(entity.getMuseum()),
-            ArtistJson.fromEntity(entity.getArtist())
-    );
-}
+    public static @Nonnull PaintingJson fromEntity(@Nonnull PaintingEntity entity) {
+        return new PaintingJson(
+                entity.getId(),
+                entity.getTitle(),
+                entity.getDescription(),
+                entity.getContent() != null && entity.getContent().length > 0 ? new String(entity.getContent(), StandardCharsets.UTF_8) : null,
+                entity.getMuseum() != null ? MuseumJson.fromEntity(entity.getMuseum()) : null,
+                ArtistJson.fromEntity(entity.getArtist())
+        );
+    }
 }

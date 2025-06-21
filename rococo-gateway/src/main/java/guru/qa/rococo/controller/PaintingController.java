@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -26,8 +27,9 @@ public class PaintingController {
     }
 
     @GetMapping
-    Page<PaintingJson> getAllPainting(@PageableDefault Pageable pageable) {
-        return paintingService.getAllPainting(pageable);
+    Page<PaintingJson> getAllPainting(@PageableDefault Pageable pageable,
+                                      @RequestParam(required = false) String title) {
+        return paintingService.getAllPainting(pageable, title);
     }
 
     @GetMapping("/{id}")
