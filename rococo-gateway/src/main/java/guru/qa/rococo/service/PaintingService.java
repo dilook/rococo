@@ -6,6 +6,7 @@ import guru.qa.rococo.data.PaintingEntity;
 import guru.qa.rococo.data.repository.ArtistRepository;
 import guru.qa.rococo.data.repository.MuseumRepository;
 import guru.qa.rococo.data.repository.PaintingRepository;
+import guru.qa.rococo.ex.NotFoundException;
 import guru.qa.rococo.model.PaintingJson;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class PaintingService {
     public PaintingJson getPaintingById(UUID id) {
         return paintingRepository.findById(id)
                 .map(PaintingJson::fromEntity)
-                .orElseThrow(() -> new IllegalArgumentException("Painting not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("Painting not found with id: " + id));
     }
 
     public Page<PaintingJson> getPaintingsByArtistId(UUID artistId, Pageable pageable) {
@@ -46,7 +47,7 @@ public class PaintingService {
 
     public PaintingJson updatePainting(PaintingJson paintingJson) {
         PaintingEntity paintingEntity = paintingRepository.findById(paintingJson.id())
-                .orElseThrow(() -> new IllegalArgumentException("Painting not found with id: " + paintingJson.id()));
+                .orElseThrow(() -> new NotFoundException("Painting not found with id: " + paintingJson.id()));
 
         paintingEntity.setTitle(paintingJson.title());
         paintingEntity.setDescription(paintingJson.description());
@@ -54,13 +55,13 @@ public class PaintingService {
 
         if (paintingJson.artist() != null) {
             ArtistEntity artistEntity = artistRepository.findById(paintingJson.artist().id())
-                    .orElseThrow(() -> new IllegalArgumentException("Artist not found with id: " + paintingJson.artist().id()));
+                    .orElseThrow(() -> new NotFoundException("Artist not found with id: " + paintingJson.artist().id()));
             paintingEntity.setArtist(artistEntity);
         }
 
         if (paintingJson.museum() != null) {
             MuseumEntity museumEntity = museumRepository.findById(paintingJson.museum().id())
-                    .orElseThrow(() -> new IllegalArgumentException("Museum not found with id: " + paintingJson.museum().id()));
+                    .orElseThrow(() -> new NotFoundException("Museum not found with id: " + paintingJson.museum().id()));
             paintingEntity.setMuseum(museumEntity);
         }
 
@@ -75,7 +76,7 @@ public class PaintingService {
 
         if (paintingJson.artist() != null) {
             ArtistEntity artistEntity = artistRepository.findById(paintingJson.artist().id())
-                    .orElseThrow(() -> new IllegalArgumentException("Artist not found with id: " + paintingJson.artist().id()));
+                    .orElseThrow(() -> new NotFoundException("Artist not found with id: " + paintingJson.artist().id()));
             paintingEntity.setArtist(artistEntity);
         } else {
             throw new IllegalArgumentException("Artist is required for a painting");
@@ -83,7 +84,7 @@ public class PaintingService {
 
         if (paintingJson.museum() != null && paintingJson.museum().id() != null) {
             MuseumEntity museumEntity = museumRepository.findById(paintingJson.museum().id())
-                    .orElseThrow(() -> new IllegalArgumentException("Museum not found with id: " + paintingJson.museum().id()));
+                    .orElseThrow(() -> new NotFoundException("Museum not found with id: " + paintingJson.museum().id()));
             paintingEntity.setMuseum(museumEntity);
         }
 

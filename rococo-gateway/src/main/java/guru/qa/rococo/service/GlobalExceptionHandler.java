@@ -1,7 +1,6 @@
 package guru.qa.rococo.service;
 
 import guru.qa.rococo.ex.NotFoundException;
-import guru.qa.rococo.ex.SameUsernameException;
 import guru.qa.rococo.model.ErrorJson;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,13 +26,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                            @Nonnull HttpServletRequest request) {
     LOG.warn("### Resolve Exception in @RestControllerAdvice ", ex);
     return withStatus("Bad request", HttpStatus.NOT_FOUND, ex.getMessage(), request);
-  }
-
-  @ExceptionHandler(SameUsernameException.class)
-  public ResponseEntity<ErrorJson> handleSameUsernameException(@Nonnull RuntimeException ex,
-                                                               @Nonnull HttpServletRequest request) {
-    LOG.warn("### Resolve Exception in @RestControllerAdvice ", ex);
-    return withStatus("Bad request", HttpStatus.BAD_REQUEST, ex.getMessage(), request);
   }
 
   @ExceptionHandler(Exception.class)

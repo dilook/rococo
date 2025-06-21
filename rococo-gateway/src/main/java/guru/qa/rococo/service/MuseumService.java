@@ -4,6 +4,7 @@ import guru.qa.rococo.data.CountryEntity;
 import guru.qa.rococo.data.MuseumEntity;
 import guru.qa.rococo.data.repository.CountryRepository;
 import guru.qa.rococo.data.repository.MuseumRepository;
+import guru.qa.rococo.ex.NotFoundException;
 import guru.qa.rococo.model.MuseumJson;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,12 +34,12 @@ public class MuseumService {
     public MuseumJson getMuseumById(UUID id) {
         return museumRepository.findById(id)
                 .map(MuseumJson::fromEntity)
-                .orElseThrow(() -> new IllegalArgumentException("Museum not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("Museum not found with id: " + id));
     }
 
     public MuseumJson updateMuseum(MuseumJson museumJson) {
         MuseumEntity museumEntity = museumRepository.findById(museumJson.id())
-                .orElseThrow(() -> new IllegalArgumentException("Museum not found with id: " + museumJson.id()));
+                .orElseThrow(() -> new NotFoundException("Museum not found with id: " + museumJson.id()));
 
         museumEntity.setTitle(museumJson.title());
         museumEntity.setDescription(museumJson.description());
@@ -49,7 +50,7 @@ public class MuseumService {
 
             if (museumJson.geo().country() != null) {
                 CountryEntity countryEntity = countryRepository.findById(museumJson.geo().country().id())
-                        .orElseThrow(() -> new IllegalArgumentException("Country not found with id: " + museumJson.geo().country().id()));
+                        .orElseThrow(() -> new NotFoundException("Country not found with id: " + museumJson.geo().country().id()));
                 museumEntity.setCountry(countryEntity);
             }
         }
@@ -68,7 +69,7 @@ public class MuseumService {
 
             if (museumJson.geo().country() != null) {
                 CountryEntity countryEntity = countryRepository.findById(museumJson.geo().country().id())
-                        .orElseThrow(() -> new IllegalArgumentException("Country not found with id: " + museumJson.geo().country().id()));
+                        .orElseThrow(() -> new NotFoundException("Country not found with id: " + museumJson.geo().country().id()));
                 museumEntity.setCountry(countryEntity);
             } else {
                 throw new IllegalArgumentException("Country is required for a museum");
