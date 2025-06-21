@@ -1,8 +1,27 @@
 package guru.qa.rococo.model;
 
+import guru.qa.rococo.data.PaintingEntity;
+import jakarta.annotation.Nonnull;
+
 import java.util.UUID;
 
 public record PaintingJson(
-        UUID id
+        UUID id,
+        String title,
+        String description,
+        byte[] content,
+        MuseumJson museum,
+        ArtistJson artist
 ) {
+
+public static @Nonnull PaintingJson fromEntity(@Nonnull PaintingEntity entity) {
+    return new PaintingJson(
+            entity.getId(),
+            entity.getTitle(),
+            entity.getDescription(),
+            entity.getContent(),
+            MuseumJson.fromEntity(entity.getMuseum()),
+            ArtistJson.fromEntity(entity.getArtist())
+    );
+}
 }

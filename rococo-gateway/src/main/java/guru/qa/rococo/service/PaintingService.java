@@ -16,6 +16,6 @@ public class PaintingService {
     }
 
     public Page<PaintingJson> getAllPainting(Pageable pageable) {
-        return null;
+        return paintingRepository.findAll(pageable).map(PaintingJson::fromEntity);
     }
 }
