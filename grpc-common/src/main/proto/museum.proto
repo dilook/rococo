@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package guru.qa.rococo.grpc;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoMuseumProto";
+
+// Country message
+message Country {
+  string id = 1;
+  string name = 2;
+}
+
+// Geo message
+message Geo {
+  string city = 1;
+  Country country = 2;
+}
+
+// Museum message
+message Museum {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string photo = 4;
+  Geo geo = 5;
+}
+
+// Request message for getting all museums
+message GetAllMuseumsRequest {
+  int32 page = 1;
+  int32 size = 2;
+  repeated string sort = 3;
+  optional string title = 4;
+}
+
+// Response message for getting all museums
+message GetAllMuseumsResponse {
+  repeated Museum museums = 1;
+  int32 total_pages = 2;
+  int64 total_elements = 3;
+  int32 current_page = 4;
+  int32 page_size = 5;
+  bool first = 6;
+  bool last = 7;
+}
+
+// Request message for getting museum by ID
+message GetMuseumByIdRequest {
+  string id = 1;
+}
+
+// Request message for creating museum
+message CreateMuseumRequest {
+  string title = 1;
+  string description = 2;
+  string photo = 3;
+  Geo geo = 4;
+}
+
+// Request message for updating museum
+message UpdateMuseumRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string photo = 4;
+  Geo geo = 5;
+}
+
+service RococoMuseumService {
+  // Get all museums with pagination and optional title filter
+  rpc GetAllMuseums(GetAllMuseumsRequest) returns (GetAllMuseumsResponse);
+
+  // Get museum by ID
+  rpc GetMuseumById(GetMuseumByIdRequest) returns (Museum);
+
+  // Create new museum
+  rpc CreateMuseum(CreateMuseumRequest) returns (Museum);
+
+  // Update existing museum
+  rpc UpdateMuseum(UpdateMuseumRequest) returns (Museum);
+}
