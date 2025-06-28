@@ -1,4 +1,4 @@
-package guru.qa.rococo.service;
+package guru.qa.rococo.service.api;
 
 import guru.qa.rococo.grpc.Country;
 import guru.qa.rococo.grpc.CreateMuseumRequest;
@@ -127,7 +127,7 @@ public class MuseumGrpcClient {
                 if (museumJson.geo().country() != null) {
                     Country country = Country.newBuilder()
                             .setId(museumJson.geo().country().id().toString())
-                            .setName(museumJson.geo().country().name())
+                            .setName(museumJson.geo().country().name() != null ? museumJson.geo().country().name() : "")
                             .build();
                     geoBuilder.setCountry(country);
                 }
