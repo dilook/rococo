@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,32 +81,21 @@ public class MuseumGrpcClient {
         }
     }
 
-    public MuseumJson createMuseum(MuseumJson museumJson) {
+    public MuseumJson createMuseum(@Nonnull MuseumJson museumJson) {
         try {
-            CreateMuseumRequest.Builder requestBuilder = CreateMuseumRequest.newBuilder()
+            CreateMuseumRequest request = CreateMuseumRequest.newBuilder()
                     .setTitle(museumJson.title())
-                    .setDescription(museumJson.description() != null ? museumJson.description() : "");
+                    .setDescription(museumJson.description() != null ? museumJson.description() : "")
+                    .setPhoto(museumJson.photo() != null ? museumJson.photo() : "")
+                    .setGeo(Geo.newBuilder()
+                            .setCity(museumJson.geo().city() != null ? museumJson.geo().city() : "")
+                            .setCountry(Country.newBuilder()
+                                    .setId(museumJson.geo().country().id().toString())
+                                    .setName(museumJson.geo().country().name() != null ? museumJson.geo().country().name() : "")
+                                    .build())
+                    ).build();
 
-            if (museumJson.photo() != null) {
-                requestBuilder.setPhoto(museumJson.photo());
-            }
-
-            if (museumJson.geo() != null) {
-                Geo.Builder geoBuilder = Geo.newBuilder();
-                if (museumJson.geo().city() != null) {
-                    geoBuilder.setCity(museumJson.geo().city());
-                }
-                if (museumJson.geo().country() != null) {
-                    Country country = Country.newBuilder()
-                            .setId(museumJson.geo().country().id().toString())
-                            .setName(museumJson.geo().country().name())
-                            .build();
-                    geoBuilder.setCountry(country);
-                }
-                requestBuilder.setGeo(geoBuilder.build());
-            }
-
-            Museum museum = museumServiceStub.createMuseum(requestBuilder.build());
+            Museum museum = museumServiceStub.createMuseum(request);
             return convertFromGrpcMuseum(museum);
         } catch (StatusRuntimeException e) {
             if (e.getStatus().getCode() == Status.Code.INVALID_ARGUMENT) {

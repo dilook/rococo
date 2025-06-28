@@ -1,6 +1,8 @@
 package guru.qa.rococo.config;
 
 import guru.qa.rococo.grpc.RococoMuseumServiceGrpc;
+import guru.qa.rococo.service.GrpcClientLoggerInterceptor;
+import io.grpc.ClientInterceptors;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.grpc.client.GrpcChannelFactory;
@@ -9,7 +11,14 @@ import org.springframework.grpc.client.GrpcChannelFactory;
 public class GrpcConfig {
 
     @Bean
-    RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub museumServiceStub(GrpcChannelFactory channels) {
-        return RococoMuseumServiceGrpc.newBlockingStub(channels.createChannel("rococo-museum"));
+    public RococoMuseumServiceGrpc.RococoMuseumServiceBlockingStub museumServiceStub(
+            GrpcChannelFactory channels,
+            GrpcClientLoggerInterceptor loggerInterceptor) {
+        return RococoMuseumServiceGrpc.newBlockingStub(
+                ClientInterceptors.intercept(
+                        channels.createChannel("rococo-museum"),
+                        loggerInterceptor
+                )
+        );
     }
 }

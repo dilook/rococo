@@ -41,6 +41,7 @@ logging:
   level:
     root: INFO
     org.springframework.grpc: DEBUG
+    qa.guru.rococo.service.GrpcLoggerInterceptor: DEBUG
 
 ---
 spring:
