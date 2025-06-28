@@ -1,7 +1,7 @@
 <script lang="ts">
 	import viewport from "$lib/hooks/useViewport";
 	import type { Pageable } from "$lib/types/Pageable";
-	import { onMount } from "svelte";
+	import { onMount, tick } from "svelte";
 
     export let label: string;
     export let value: string | undefined;
@@ -15,6 +15,7 @@
     let currentPage = 0;
     let data: any [] = [];
     let noMoreData: boolean;
+    let selectElement: HTMLSelectElement;
 
     onMount(async() => {
         const res = await loadFunction({page: currentPage});
@@ -30,6 +31,9 @@
     });
 
     const loadMore = async () => {
+        // Store current scroll position
+        const scrollTop = selectElement?.scrollTop || 0;
+
         const response = await loadFunction({page: ++currentPage});
         if(response.error) {
             console.warn(response.error);
@@ -40,6 +44,12 @@
             const newBatch = resData.content;
             data = [...data, ...newBatch];
             noMoreData = currentPage === resData.totalPages - 1;
+
+            // Restore scroll position after DOM update
+            await tick();
+            if(selectElement) {
+                selectElement.scrollTop = scrollTop;
+            }
         }
     }
 
@@ -52,6 +62,7 @@
         class="select" 
         size={3}
         bind:value={value}
+        bind:this={selectElement}
         on:select={() => error = ""}
         {required}
         {name}
@@ -75,4 +86,3 @@
     </select>
     <span class="text-error-400">{error}</span>
 </label>
-
