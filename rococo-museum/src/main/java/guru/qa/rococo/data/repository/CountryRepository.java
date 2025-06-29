@@ -1,6 +1,6 @@
-package qa.guru.rococo.data.repository;
+package guru.qa.rococo.data.repository;
 
-import qa.guru.rococo.data.CountryEntity;
+import guru.qa.rococo.data.CountryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package qa.guru.rococo.service;
+package guru.qa.rococo.service;
 
 import guru.qa.rococo.grpc.GetAllCountriesListRequest;
 import guru.qa.rococo.grpc.GetAllCountriesRequest;
@@ -13,8 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import qa.guru.rococo.data.CountryEntity;
-import qa.guru.rococo.data.repository.CountryRepository;
+import guru.qa.rococo.data.CountryEntity;
+import guru.qa.rococo.data.repository.CountryRepository;
 
 import java.util.List;
 import java.util.UUID;

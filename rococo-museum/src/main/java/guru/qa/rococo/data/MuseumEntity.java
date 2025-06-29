@@ -1,4 +1,4 @@
-package qa.guru.rococo.data;
+package guru.qa.rococo.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

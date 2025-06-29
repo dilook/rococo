@@ -1,6 +1,6 @@
-package qa.guru.rococo.data.repository;
+package guru.qa.rococo.data.repository;
 
-import qa.guru.rococo.data.MuseumEntity;
+import guru.qa.rococo.data.MuseumEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package qa.guru.rococo.service;
+package guru.qa.rococo.service;
 
 import guru.qa.rococo.grpc.GetAllMuseumsRequest;
 import guru.qa.rococo.grpc.GetAllMuseumsResponse;
@@ -12,9 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import qa.guru.rococo.data.MuseumEntity;
-import qa.guru.rococo.data.repository.CountryRepository;
-import qa.guru.rococo.data.repository.MuseumRepository;
+import guru.qa.rococo.data.MuseumEntity;
+import guru.qa.rococo.data.repository.CountryRepository;
+import guru.qa.rococo.data.repository.MuseumRepository;
 
 import java.util.Collections;
 

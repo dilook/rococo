@@ -8,6 +8,18 @@ option java_multiple_files = true;
 option java_package = "guru.qa.rococo.grpc";
 option java_outer_classname = "RococoMuseumProto";
 
+service RococoMuseumService {
+  rpc GetAllMuseums(GetAllMuseumsRequest) returns (GetAllMuseumsResponse);
+  rpc GetMuseumById(GetMuseumByIdRequest) returns (Museum);
+  rpc CreateMuseum(CreateMuseumRequest) returns (Museum);
+  rpc UpdateMuseum(UpdateMuseumRequest) returns (Museum);
+}
+
+service RococoCountryService {
+  rpc GetAllCountries(GetAllCountriesRequest) returns (GetAllCountriesResponse);
+  rpc GetAllCountriesList(GetAllCountriesListRequest) returns (stream Country);
+}
+
 // Country message
 message Country {
   string id = 1;
@@ -92,24 +104,4 @@ message GetAllCountriesResponse {
 message GetAllCountriesListRequest {
 }
 
-service RococoMuseumService {
-  // Get all museums with pagination and optional title filter
-  rpc GetAllMuseums(GetAllMuseumsRequest) returns (GetAllMuseumsResponse);
 
-  // Get museum by ID
-  rpc GetMuseumById(GetMuseumByIdRequest) returns (Museum);
-
-  // Create new museum
-  rpc CreateMuseum(CreateMuseumRequest) returns (Museum);
-
-  // Update existing museum
-  rpc UpdateMuseum(UpdateMuseumRequest) returns (Museum);
-}
-
-service RococoCountryService {
-  // Get all countries with pagination
-  rpc GetAllCountries(GetAllCountriesRequest) returns (GetAllCountriesResponse);
-
-  // Get all countries as list without pagination
-  rpc GetAllCountriesList(GetAllCountriesListRequest) returns (stream Country);
-}

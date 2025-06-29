@@ -1,4 +1,4 @@
-package qa.guru.rococo.service;
+package guru.qa.rococo.service;
 
 import guru.qa.rococo.grpc.*;
 import io.grpc.Status;
@@ -8,8 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.grpc.server.service.GrpcService;
-import qa.guru.rococo.data.CountryEntity;
-import qa.guru.rococo.data.repository.CountryRepository;
+import guru.qa.rococo.data.CountryEntity;
+import guru.qa.rococo.data.repository.CountryRepository;
 
 import java.util.List;
 

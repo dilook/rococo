@@ -1,4 +1,4 @@
-package qa.guru.rococo.service;
+package guru.qa.rococo.service;
 
 import io.grpc.ForwardingServerCallListener;
 import io.grpc.Metadata;

@@ -1,8 +1,8 @@
-package qa.guru.rococo;
+package guru.qa.rococo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import qa.guru.rococo.service.PropertiesLogger;
+import guru.qa.rococo.service.PropertiesLogger;
 
 @SpringBootApplication
 public class RococoMuseumApplication {
