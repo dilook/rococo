@@ -21,6 +21,8 @@ spring:
         rococo-museum:
           address: 'static://localhost:9091'
           negotiation-type: plaintext
+          max-inbound-message-size: 8388608
+
   datasource:
     url: 'jdbc:postgresql://localhost:5432/rococo-gateway'
     username: postgres
