@@ -1,18 +1,27 @@
 package guru.qa.rococo.test;
 
-import guru.qa.rococo.jupiter.annotation.ApiLogin;
-import guru.qa.rococo.jupiter.annotation.Token;
-import guru.qa.rococo.jupiter.annotation.User;
+import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
+import guru.qa.rococo.page.MainPage;
 import org.junit.jupiter.api.Test;
 
 @WebTest
 public class LoginTest {
 
-    @ApiLogin
     @Test
-    @User
-    void loginTest(@Token String token) {
-        System.out.println(token);
+    void profileShouldBeDisplayedAfterSuccessLogin() {
+        Selenide.open(MainPage.URL, MainPage.class)
+                .checkThatPageLoaded()
+                .clickLogin()
+                .successLogin("duck", "12345")
+                .checkThatPageLoaded();
+    }
+
+    @Test
+    void errorShouldBeDisplayedOnBadCredentialLogin() {
+        Selenide.open(MainPage.URL, MainPage.class)
+                .clickLogin()
+                .login("duck", "1")
+                .checkErrorsMessage("Неверные учетные данные пользователя");
     }
 }

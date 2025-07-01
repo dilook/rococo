@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+    <title>Ошибка - Rococo</title>
+    <link rel="icon" th:href="@{images/favicon.ico}"/>
+    <link th:href="@{styles/styles.css}" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<main>
+    <div class="wrapper">
+        <section class="content">
+            <div class="form">
+                <h1 class="form__header">Ro<span class="form__text_gold">coco</span></h1>
+                <div class="form__error-section">
+                    <h2 class="form__subheader">Произошла ошибка</h2>
+                    <div class="form__error-details">
+                        <p class="form__error-status">Код ошибки: <span th:text="${status}">500</span></p>
+                        <p class="form__error-message" th:text="${error}">Неизвестная ошибка</p>
+                    </div>
+                </div>
+                <div class="form__actions">
+                    <a class="form__submit" th:href="@{|${frontUri}|}">Вернуться на главную</a>
+                </div>
+            </div>
+            <img class="content__image" src="../static/images/error.jpg" th:src="@{images/error.jpg}" alt="Ижевск"/>
+        </section>
+    </div>
+</main>
+</body>
+</html>
