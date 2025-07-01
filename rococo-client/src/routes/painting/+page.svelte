@@ -22,6 +22,7 @@
 			emptyStateTitle="Пока что список картин пуст. Чтобы пополнить коллекцию, добавьте новую картину"
 			dataKey="title"
 			successMessage="Добавлена картины"
+			listWrapperId="painting"
 	>
 		<PaintingList paintings={$paintingsStore.data}/>
 	</CommonPage>

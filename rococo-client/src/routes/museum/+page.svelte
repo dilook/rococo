@@ -24,6 +24,7 @@
 			emptyStateTitle="Пока что список музеев пуст. Чтобы пополнить коллекцию, добавьте новый музей"
 			dataKey="title"
 			successMessage="Добавлен музей"
+			listWrapperId="museum"
 	>
 		<MuseumList/>
 	</CommonPage>

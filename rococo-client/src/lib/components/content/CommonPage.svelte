@@ -24,6 +24,7 @@
     export let emptyStateTitle: string;
     export let successMessage: string;
     export let dataKey: string;
+    export let listWrapperId: string = "";
 
     export let loadFunction: ({page}: {page?: number, search?: string}) => Promise<{data?: Pageable<Type[]>, error?: string}>;
 
@@ -161,6 +162,7 @@
              isLoading={$store.isLoading}
              {loadMore}
              {clickAddButton}
+             id={listWrapperId}
 >
     <slot/>
 </ListWrapper>
