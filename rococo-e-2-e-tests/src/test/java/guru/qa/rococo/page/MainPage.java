@@ -12,6 +12,7 @@ public class MainPage {
 
     private final SelenideElement profileBtn = $("svg.avatar-initials");
     private final SelenideElement loginBtn = $(byText("Войти"));
+    private final SelenideElement museumLink = $("a[href='/museum']");
 
     public MainPage checkThatPageLoaded() {
         $(byText("Ваши любимые картины и художники всегда рядом")).shouldBe(visible);
@@ -25,5 +26,10 @@ public class MainPage {
 
     public void profileAvatarShouldBeVisible() {
         profileBtn.shouldBe(visible);
+    }
+
+    public MuseumPage goToMuseum() {
+        museumLink.click();
+        return new MuseumPage();
     }
 }

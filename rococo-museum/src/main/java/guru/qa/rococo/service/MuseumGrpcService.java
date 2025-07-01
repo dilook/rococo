@@ -100,20 +100,6 @@ public class MuseumGrpcService extends RococoMuseumServiceGrpc.RococoMuseumServi
     @Override
     public void createMuseum(CreateMuseumRequest request, StreamObserver<Museum> responseObserver) {
         try {
-            if (request.getGeo() == null) {
-                responseObserver.onError(Status.INVALID_ARGUMENT
-                        .withDescription("Geo information is required for a museum")
-                        .asRuntimeException());
-                return;
-            }
-
-            if (request.getGeo().getCountry() == null) {
-                responseObserver.onError(Status.INVALID_ARGUMENT
-                        .withDescription("Country is required for a museum")
-                        .asRuntimeException());
-                return;
-            }
-
             UUID countryId = UUID.fromString(request.getGeo().getCountry().getId());
             CountryEntity countryEntity = countryRepository.findById(countryId)
                     .orElseThrow(() -> new RuntimeException("Country not found with id: " + countryId));
@@ -121,8 +107,7 @@ public class MuseumGrpcService extends RococoMuseumServiceGrpc.RococoMuseumServi
             MuseumEntity museumEntity = new MuseumEntity();
             museumEntity.setTitle(request.getTitle());
             museumEntity.setDescription(request.getDescription());
-            museumEntity.setPhoto(request.getPhoto() != null && !request.getPhoto().isEmpty() 
-                    ? request.getPhoto().getBytes(StandardCharsets.UTF_8) : null);
+            museumEntity.setPhoto(request.getPhoto().getBytes(StandardCharsets.UTF_8));
             museumEntity.setCity(request.getGeo().getCity());
             museumEntity.setCountry(countryEntity);
 
@@ -153,19 +138,13 @@ public class MuseumGrpcService extends RococoMuseumServiceGrpc.RococoMuseumServi
 
             museumEntity.setTitle(request.getTitle());
             museumEntity.setDescription(request.getDescription());
-            museumEntity.setPhoto(request.getPhoto() != null && !request.getPhoto().isEmpty() 
-                    ? request.getPhoto().getBytes(StandardCharsets.UTF_8) : null);
+            museumEntity.setPhoto(request.getPhoto().getBytes(StandardCharsets.UTF_8));
+            museumEntity.setCity(request.getGeo().getCity());
 
-            if (request.getGeo() != null) {
-                museumEntity.setCity(request.getGeo().getCity());
-
-                if (request.getGeo().getCountry() != null) {
-                    UUID countryId = UUID.fromString(request.getGeo().getCountry().getId());
-                    CountryEntity countryEntity = countryRepository.findById(countryId)
-                            .orElseThrow(() -> new RuntimeException("Country not found with id: " + countryId));
-                    museumEntity.setCountry(countryEntity);
-                }
-            }
+            UUID countryId = UUID.fromString(request.getGeo().getCountry().getId());
+            CountryEntity countryEntity = countryRepository.findById(countryId)
+                    .orElseThrow(() -> new RuntimeException("Country not found with id: " + countryId));
+            museumEntity.setCountry(countryEntity);
 
             MuseumEntity savedMuseum = museumRepository.save(museumEntity);
             responseObserver.onNext(convertToGrpcMuseum(savedMuseum));
