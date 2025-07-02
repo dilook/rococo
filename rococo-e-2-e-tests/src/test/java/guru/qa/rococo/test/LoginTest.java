@@ -14,7 +14,7 @@ public class LoginTest {
                 .checkThatPageLoaded()
                 .clickLogin()
                 .successLogin("duck", "12345")
-                .checkThatPageLoaded();
+                .profileAvatarShouldBeVisible();
     }
 
     @Test
