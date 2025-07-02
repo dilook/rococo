@@ -19,6 +19,11 @@ public class RandomDataUtils {
     }
 
     @Nonnull
+    public static String randomMuseumName() {
+        return faker.letterify("??????????");
+    }
+
+    @Nonnull
     public static String randomSurname() {
         return faker.name().lastName();
     }

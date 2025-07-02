@@ -26,7 +26,6 @@ public class BrowserExtension implements
     LifecycleMethodExecutionExceptionHandler {
 
   static {
-    Configuration.timeout = 8000;
     Configuration.pageLoadStrategy = "eager";
     if ("docker".equals(System.getProperty("test.env"))) {
       Configuration.remote = "http://selenoid:4444/wd/hub";

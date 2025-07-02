@@ -2,6 +2,7 @@ package guru.qa.rococo.test;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
+import guru.qa.rococo.page.MainPage;
 import guru.qa.rococo.page.RegisterPage;
 import guru.qa.rococo.utils.RandomDataUtils;
 import org.junit.jupiter.api.Test;
@@ -11,9 +12,15 @@ public class RegistrationTest {
 
     @Test
     void userShouldBeRegisteredWithValidData() {
+        String username = RandomDataUtils.randomUsername();
         Selenide.open(RegisterPage.URL, RegisterPage.class)
-                .register(RandomDataUtils.randomUsername(), "12345", "12345")
+                .register(username, "12345", "12345")
                 .checkSuccessMessage();
+
+        Selenide.open(MainPage.URL, MainPage.class)
+                .clickLogin()
+                .successLogin(username, "12345")
+                .profileAvatarShouldBeVisible();
     }
 
     @Test

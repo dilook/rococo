@@ -18,6 +18,7 @@ public class RegisterPage extends BasePage<RegisterPage>{
     private final SelenideElement passwordError = $(".form__error.error__password");
     private final SelenideElement passwordSubmitError = $(".form__error.error__passwordSubmit");
     private final SelenideElement successMessage = $("p.form__subheader");
+    private final SelenideElement loginBtn = $(".form__submit");
 
     public RegisterPage register(String username, String password, String passwordConfirm) {
         this.username.setValue(username);
