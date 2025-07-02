@@ -1,6 +1,18 @@
 package guru.qa.rococo.service;
 
-import guru.qa.rococo.grpc.*;
+import guru.qa.rococo.data.CountryEntity;
+import guru.qa.rococo.data.MuseumEntity;
+import guru.qa.rococo.data.repository.CountryRepository;
+import guru.qa.rococo.data.repository.MuseumRepository;
+import guru.qa.rococo.grpc.Country;
+import guru.qa.rococo.grpc.CreateMuseumRequest;
+import guru.qa.rococo.grpc.Geo;
+import guru.qa.rococo.grpc.GetAllMuseumsRequest;
+import guru.qa.rococo.grpc.GetAllMuseumsResponse;
+import guru.qa.rococo.grpc.GetMuseumByIdRequest;
+import guru.qa.rococo.grpc.Museum;
+import guru.qa.rococo.grpc.RococoMuseumServiceGrpc;
+import guru.qa.rococo.grpc.UpdateMuseumRequest;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.springframework.data.domain.Page;
@@ -8,13 +20,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.grpc.server.service.GrpcService;
-import guru.qa.rococo.data.CountryEntity;
-import guru.qa.rococo.data.MuseumEntity;
-import guru.qa.rococo.data.repository.CountryRepository;
-import guru.qa.rococo.data.repository.MuseumRepository;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @GrpcService
@@ -100,6 +109,16 @@ public class MuseumGrpcService extends RococoMuseumServiceGrpc.RococoMuseumServi
     @Override
     public void createMuseum(CreateMuseumRequest request, StreamObserver<Museum> responseObserver) {
         try {
+            Optional<MuseumEntity> existing = museumRepository.findByTitle(request.getTitle());
+            if (existing.isPresent()) {
+                responseObserver.onError(
+                        Status.ALREADY_EXISTS
+                                .withDescription("Museum with title '%s' already exists".formatted(request.getTitle()))
+                                .asRuntimeException()
+                );
+                return;
+            }
+
             UUID countryId = UUID.fromString(request.getGeo().getCountry().getId());
             CountryEntity countryEntity = countryRepository.findById(countryId)
                     .orElseThrow(() -> new RuntimeException("Country not found with id: " + countryId));
@@ -117,10 +136,6 @@ public class MuseumGrpcService extends RococoMuseumServiceGrpc.RococoMuseumServi
         } catch (IllegalArgumentException e) {
             responseObserver.onError(Status.INVALID_ARGUMENT
                     .withDescription("Invalid country ID format")
-                    .asRuntimeException());
-        } catch (RuntimeException e) {
-            responseObserver.onError(Status.NOT_FOUND
-                    .withDescription(e.getMessage())
                     .asRuntimeException());
         } catch (Exception e) {
             responseObserver.onError(Status.INTERNAL

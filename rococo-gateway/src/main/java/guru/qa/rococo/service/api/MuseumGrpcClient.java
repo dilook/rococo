@@ -1,5 +1,6 @@
 package guru.qa.rococo.service.api;
 
+import guru.qa.rococo.ex.AlreadyExistsException;
 import guru.qa.rococo.grpc.Country;
 import guru.qa.rococo.grpc.CreateMuseumRequest;
 import guru.qa.rococo.grpc.Geo;
@@ -103,6 +104,9 @@ public class MuseumGrpcClient {
             }
             if (e.getStatus().getCode() == Status.Code.NOT_FOUND) {
                 throw new guru.qa.rococo.ex.NotFoundException(e.getStatus().getDescription());
+            }
+            if (e.getStatus().getCode() == Status.Code.ALREADY_EXISTS) {
+                throw new AlreadyExistsException(e.getStatus().getDescription());
             }
             throw new RuntimeException("Error creating museum: " + e.getStatus().getDescription(), e);
         }
