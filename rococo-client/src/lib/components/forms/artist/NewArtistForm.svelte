@@ -45,8 +45,12 @@
 			if($modalStore[0].response) {
 				$modalStore[0].response(res);
 			}
-			modalStore.close();
-		} 
+
+			// Only close modal if there's no error from backend
+			if (!res.error) {
+				modalStore.close();
+			}
+		}
 	}
 
 </script>

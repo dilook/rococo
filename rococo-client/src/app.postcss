@@ -13,3 +13,16 @@
 html, body { 
 	@apply h-full overflow-hidden; 
 }
+
+/* Ensure toasts appear above modals */
+.snackbar-wrapper {
+	z-index: 10000 !important;
+}
+
+.snackbar {
+	z-index: 10000 !important;
+}
+
+.toast {
+	z-index: 10000 !important;
+}
