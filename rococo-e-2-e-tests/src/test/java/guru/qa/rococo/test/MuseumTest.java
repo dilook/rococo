@@ -6,6 +6,7 @@ import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.page.MainPage;
 import guru.qa.rococo.page.MuseumPage;
 import guru.qa.rococo.utils.RandomDataUtils;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 @WebTest
@@ -17,8 +18,7 @@ public class MuseumTest {
                 .clickLogin()
                 .successLogin("duck", "12345");
         for (int i = 0; i < 4; i++) {
-            String museumName = RandomDataUtils.randomMuseumName();
-            createMuseum(museumName);
+            createMuseum(RandomDataUtils.randomMuseumName());
         }
 
         Selenide.open(MainPage.URL, MainPage.class)
@@ -31,23 +31,43 @@ public class MuseumTest {
 
     private void createMuseum(String museumName) {
         Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .checkThatPageLoaded()
                 .addMuseum(museumName,
                         "Австралия",
                         "Канберра",
                         "img/lyvr.png",
                         "Музей" + museumName + " — один из крупнейших и самый популярный художественный музей мира."
-                );
+                )
+                .checkAlertMessage("Добавлен музей: %s".formatted(museumName));
     }
-
 
     @Test
     void shouldLoadMuseumPageForAuthorizedUser() {
-
+        Selenide.open(MainPage.URL, MainPage.class)
+                .clickLogin()
+                .successLogin("duck", "12345")
+                .goToMuseums()
+                .checkMuseumsSize(4);
     }
 
     @Test
-    void shouldFindMuseumByTitle() {
+    void shouldNotBeAbleToAddMuseumForUnauthorizedUser() {
+        Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .checkAddButtonNotExist();
+    }
 
+    @RepeatedTest(15)
+    void shouldFindMuseumByTitle() {
+        Selenide.open(MainPage.URL, MainPage.class)
+                .clickLogin()
+                .successLogin("duck", "12345");
+
+        String museumName = RandomDataUtils.randomMuseumName();
+        createMuseum(museumName);
+
+        Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .checkMuseum(museumName.substring(0, 3))
+                .checkMuseumsSize(1);
     }
 
     @Test

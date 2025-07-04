@@ -5,8 +5,11 @@ import guru.qa.rococo.config.Config;
 import guru.qa.rococo.page.component.CreateMuseumComponent;
 import guru.qa.rococo.page.component.ListComponent;
 import guru.qa.rococo.page.component.SearchComponent;
+import lombok.Getter;
 
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class MuseumPage extends BasePage<MuseumPage> {
@@ -14,7 +17,7 @@ public class MuseumPage extends BasePage<MuseumPage> {
 
     private final SelenideElement header = $("h2");
     private final SearchComponent search = new SearchComponent();
-    private final SelenideElement addBtn = $("button.btn");
+    private final SelenideElement addBtn = $("#add-button");
 
     private final CreateMuseumComponent createMuseum = new CreateMuseumComponent($("[data-testid='modal-component']"));
     private final ListComponent listItems = new ListComponent($("#list-museum"));
@@ -38,8 +41,13 @@ public class MuseumPage extends BasePage<MuseumPage> {
     }
 
     public MuseumPage addMuseum(String museumTitle, String country, String city, String imgClasspath, String description) {
-        addBtn.click();
+        addBtn.shouldBe(visible).click();
         createMuseum.fillForm(museumTitle, country, city, imgClasspath, description);
+        return this;
+    }
+
+    public MuseumPage checkAddButtonNotExist() {
+        header.shouldNot(exist);
         return this;
     }
 }

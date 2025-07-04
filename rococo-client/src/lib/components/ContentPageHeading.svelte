@@ -16,7 +16,7 @@
 <div class="flex items-center justify-between m-4">
     <h2 class="text-3xl m-4">{title}</h2>
     {#if $sessionStore.user}
-        <button type="button" class="btn variant-filled-primary ml-4" on:click={onAddButtonClick}>{addButtonName}</button>
+        <button type="button" id="add-button" class="btn variant-filled-primary ml-4" on:click={onAddButtonClick}>{addButtonName}</button>
     {/if}
 </div>
 

@@ -22,7 +22,9 @@ public class LoginPage extends BasePage<LoginPage> {
 
     public MainPage successLogin(String username, String password) {
         login(username, password);
-        return new MainPage();
+        MainPage mainPage = new MainPage();
+        mainPage.profileAvatarShouldBeVisible();
+        return mainPage;
     }
 
 
