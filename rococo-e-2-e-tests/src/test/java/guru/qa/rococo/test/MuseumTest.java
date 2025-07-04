@@ -6,7 +6,6 @@ import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.page.MainPage;
 import guru.qa.rococo.page.MuseumPage;
 import guru.qa.rococo.utils.RandomDataUtils;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 @WebTest
@@ -56,7 +55,7 @@ public class MuseumTest {
                 .checkAddButtonNotExist();
     }
 
-    @RepeatedTest(15)
+    @Test
     void shouldFindMuseumByTitle() {
         Selenide.open(MainPage.URL, MainPage.class)
                 .clickLogin()
@@ -66,7 +65,8 @@ public class MuseumTest {
         createMuseum(museumName);
 
         Selenide.open(MuseumPage.URL, MuseumPage.class)
-                .checkMuseum(museumName.substring(0, 3))
+                .checkMuseumsSize(4) // wait ending of first page request
+                .checkMuseum(museumName)
                 .checkMuseumsSize(1);
     }
 
