@@ -19,7 +19,8 @@ public class MuseumPage extends BasePage<MuseumPage> {
     private final SearchComponent search = new SearchComponent();
     private final SelenideElement addBtn = $("#add-button");
 
-    private final CreateMuseumComponent createMuseum = new CreateMuseumComponent($("[data-testid='modal-component']"));
+    @Getter
+    private final CreateMuseumComponent modalForm = new CreateMuseumComponent();
     private final ListComponent listItems = new ListComponent($("#list-museum"));
 
 
@@ -35,14 +36,25 @@ public class MuseumPage extends BasePage<MuseumPage> {
         return this;
     }
 
+    public MuseumCardPage clickTo(String title) {
+        search.search(title);
+        listItems.clickItem(title);
+        return new MuseumCardPage();
+    }
+
     public MuseumPage checkMuseumsSize(int expectedSize) {
         listItems.checkItemsSize(expectedSize);
         return this;
     }
 
+    public MuseumPage loadNextPage() {
+        listItems.loadNextPage();
+        return this;
+    }
+
     public MuseumPage addMuseum(String museumTitle, String country, String city, String imgClasspath, String description) {
         addBtn.shouldBe(visible).click();
-        createMuseum.fillForm(museumTitle, country, city, imgClasspath, description);
+        modalForm.fillForm(museumTitle, country, city, imgClasspath, description);
         return this;
     }
 

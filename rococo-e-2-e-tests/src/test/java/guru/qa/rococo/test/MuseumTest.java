@@ -4,6 +4,7 @@ package guru.qa.rococo.test;
 import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.page.MainPage;
+import guru.qa.rococo.page.MuseumCardPage;
 import guru.qa.rococo.page.MuseumPage;
 import guru.qa.rococo.utils.RandomDataUtils;
 import org.junit.jupiter.api.Test;
@@ -88,11 +89,48 @@ public class MuseumTest {
 
     @Test
     void shouldUpdateMuseumByAuthorizedUser() {
+        String originalMuseumName = RandomDataUtils.randomMuseumName();
 
+        Selenide.open(MainPage.URL, MainPage.class)
+                .clickLogin()
+                .successLogin("duck", "12345");
+
+        createMuseum(originalMuseumName);
+
+        String randomCityName = RandomDataUtils.randomCityName();
+        Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .clickTo(originalMuseumName)
+                .editMuseum()
+                .setCity(randomCityName)
+                .submitForm();
+        new MuseumCardPage().checkCountryCity(randomCityName);
     }
 
     @Test
     void shouldLoadMuseumByPage() {
+        Selenide.open(MainPage.URL, MainPage.class)
+                .clickLogin()
+                .successLogin("duck", "12345");
+
+        for (int i = 0; i < 8; i++) {
+            createMuseum(RandomDataUtils.randomMuseumName());
+        }
+
+        Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .checkMuseumsSize(4)
+                .loadNextPage()
+                .checkMuseumsSize(8);
+
+        // Test that page loads properly for unauthorized user as well
+        Selenide.open(MainPage.URL, MainPage.class)
+                .getHeader()
+                .clickAvatar()
+                .logout();
+
+        Selenide.open(MuseumPage.URL, MuseumPage.class)
+                .checkMuseumsSize(4)
+                .loadNextPage()
+                .checkMuseumsSize(8);
     }
 
 

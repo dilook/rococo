@@ -24,6 +24,12 @@ public class RandomDataUtils {
     }
 
     @Nonnull
+    public static String randomCityName() {
+        return faker.address().city();
+    }
+
+
+    @Nonnull
     public static String randomSurname() {
         return faker.name().lastName();
     }
