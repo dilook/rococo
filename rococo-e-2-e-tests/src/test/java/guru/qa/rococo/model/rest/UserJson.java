@@ -3,6 +3,7 @@ package guru.qa.rococo.model.rest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import guru.qa.rococo.data.entity.userdata.UserEntity;
 import guru.qa.rococo.model.TestData;
 
 import javax.annotation.Nonnull;
@@ -27,6 +28,18 @@ public record UserJson(
 
     public UserJson(@Nonnull String username, @Nullable TestData testData) {
         this(null, username, null, null, null, testData);
+    }
+
+    @Nonnull
+    public static UserJson fromEntity(@Nonnull UserEntity entity, @Nullable String avatar) {
+        return new UserJson(
+                entity.getId(),
+                entity.getUsername(),
+                entity.getFirstname(),
+                entity.getLastname(),
+                avatar,
+                null
+        );
     }
 
     public @Nonnull UserJson addUsername(@Nonnull String username) {

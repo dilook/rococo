@@ -10,6 +10,8 @@ import guru.qa.rococo.model.rest.UserJson;
 import guru.qa.rococo.service.UsersClient;
 import io.qameta.allure.Step;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Assertions;
+import retrofit2.Response;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
@@ -37,7 +39,9 @@ public class UsersApiClient implements UsersClient {
                     password,
                     ThreadSafeCookieStore.INSTANCE.cookieValue("XSRF-TOKEN")
             ).execute();
-            UserJson createdUser = requireNonNull(userdataApi.currentUser(username).execute().body());
+            Response<UserJson> response = userdataApi.currentUser(username).execute();
+            Assertions.assertTrue(response.isSuccessful());
+            UserJson createdUser = response.body();
             return createdUser.addTestData(
                     new TestData(
                             password
