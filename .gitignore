@@ -30,3 +30,6 @@ out/
 
 # local properties
 selenide.properties
+
+# logs
+*.log

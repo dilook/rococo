@@ -1,7 +1,9 @@
 package guru.qa.rococo.test;
 
 import com.codeborne.selenide.Selenide;
+import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
+import guru.qa.rococo.model.rest.UserJson;
 import guru.qa.rococo.page.MainPage;
 import org.junit.jupiter.api.Test;
 
@@ -9,11 +11,12 @@ import org.junit.jupiter.api.Test;
 public class LoginTest {
 
     @Test
-    void profileShouldBeDisplayedAfterSuccessLogin() {
+    @User
+    void profileShouldBeDisplayedAfterSuccessLogin(UserJson user) {
         Selenide.open(MainPage.URL, MainPage.class)
                 .checkThatPageLoaded()
                 .clickLogin()
-                .successLogin("duck", "12345")
+                .successLogin(user.username(), user.testData().password())
                 .profileAvatarShouldBeVisible();
     }
 

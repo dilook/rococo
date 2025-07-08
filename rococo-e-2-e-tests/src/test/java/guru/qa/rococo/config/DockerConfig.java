@@ -40,7 +40,7 @@ enum DockerConfig implements Config {
     @Nonnull
     @Override
     public String userdataJdbcUrl() {
-        return "jdbc:postgresql://rococo-all-db:5432/rococo-userdata";
+        return "jdbc:postgresql://rococo-all-db:5432/rococo-gateway";
     }
 
     @NotNull
