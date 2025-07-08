@@ -36,7 +36,7 @@ public class MuseumTest {
                         "Австралия",
                         "Канберра",
                         "img/lyvr.png",
-                        "Музей" + museumName + " — один из крупнейших и самый популярный художественный музей мира."
+                        "Музей %s — один из крупнейших и самый популярный художественный музей мира.".formatted(museumName)
                 )
                 .checkAlertMessage("Добавлен музей: %s".formatted(museumName));
     }
