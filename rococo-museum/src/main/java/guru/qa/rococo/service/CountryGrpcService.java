@@ -1,6 +1,13 @@
 package guru.qa.rococo.service;
 
-import guru.qa.rococo.grpc.*;
+import guru.qa.rococo.data.CountryEntity;
+import guru.qa.rococo.data.repository.CountryRepository;
+import guru.qa.rococo.grpc.Country;
+import guru.qa.rococo.grpc.GetAllCountriesListRequest;
+import guru.qa.rococo.grpc.GetAllCountriesRequest;
+import guru.qa.rococo.grpc.GetAllCountriesResponse;
+import guru.qa.rococo.grpc.RococoCountryServiceGrpc;
+import guru.qa.rococo.utils.GrpcUtils;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.springframework.data.domain.Page;
@@ -8,10 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.grpc.server.service.GrpcService;
-import guru.qa.rococo.data.CountryEntity;
-import guru.qa.rococo.data.repository.CountryRepository;
-
-import java.util.List;
 
 @GrpcService
 public class CountryGrpcService extends RococoCountryServiceGrpc.RococoCountryServiceImplBase {
@@ -25,21 +28,7 @@ public class CountryGrpcService extends RococoCountryServiceGrpc.RococoCountrySe
     @Override
     public void getAllCountries(GetAllCountriesRequest request, StreamObserver<GetAllCountriesResponse> responseObserver) {
         try {
-            // Create a sort from request
-            Sort sort = Sort.unsorted();
-            if (!request.getSortList().isEmpty()) {
-                List<Sort.Order> orders = request.getSortList().stream()
-                        .map(sortStr -> {
-                            if (sortStr.startsWith("-")) {
-                                return Sort.Order.desc(sortStr.substring(1));
-                            } else {
-                                return Sort.Order.asc(sortStr);
-                            }
-                        })
-                        .toList();
-                sort = Sort.by(orders);
-            }
-
+            Sort sort = GrpcUtils.createSortFromList(request.getSortList());
             Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
             Page<CountryEntity> countries = countryRepository.findAll(pageable);
 
@@ -51,8 +40,8 @@ public class CountryGrpcService extends RococoCountryServiceGrpc.RococoCountrySe
                     .setFirst(countries.isFirst())
                     .setLast(countries.isLast());
 
-            countries.getContent().forEach(country -> 
-                responseBuilder.addCountries(convertToGrpcCountry(country))
+            countries.getContent().forEach(country ->
+                    responseBuilder.addCountries(convertToGrpcCountry(country))
             );
 
             responseObserver.onNext(responseBuilder.build());
@@ -67,12 +56,9 @@ public class CountryGrpcService extends RococoCountryServiceGrpc.RococoCountrySe
     @Override
     public void getAllCountriesList(GetAllCountriesListRequest request, StreamObserver<Country> responseObserver) {
         try {
-            List<CountryEntity> countries = countryRepository.findAll();
-
-            countries.forEach(country -> 
-                responseObserver.onNext(convertToGrpcCountry(country))
+            countryRepository.findAll().forEach(country ->
+                    responseObserver.onNext(convertToGrpcCountry(country))
             );
-
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onError(Status.INTERNAL

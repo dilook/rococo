@@ -13,6 +13,7 @@ import guru.qa.rococo.grpc.GetMuseumByIdRequest;
 import guru.qa.rococo.grpc.Museum;
 import guru.qa.rococo.grpc.RococoMuseumServiceGrpc;
 import guru.qa.rococo.grpc.UpdateMuseumRequest;
+import guru.qa.rococo.utils.GrpcUtils;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.grpc.server.service.GrpcService;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,23 +40,8 @@ public class MuseumGrpcService extends RococoMuseumServiceGrpc.RococoMuseumServi
     @Override
     public void getAllMuseums(GetAllMuseumsRequest request, StreamObserver<GetAllMuseumsResponse> responseObserver) {
         try {
-            // Create a sort from request
-            Sort sort = Sort.unsorted();
-            if (!request.getSortList().isEmpty()) {
-                List<Sort.Order> orders = request.getSortList().stream()
-                        .map(sortStr -> {
-                            if (sortStr.startsWith("-")) {
-                                return Sort.Order.desc(sortStr.substring(1));
-                            } else {
-                                return Sort.Order.asc(sortStr);
-                            }
-                        })
-                        .toList();
-                sort = Sort.by(orders);
-            }
-
+            Sort sort = GrpcUtils.createSortFromList(request.getSortList());
             Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
-            
             Page<MuseumEntity> museums = request.hasTitle() && !request.getTitle().isEmpty()
                     ? museumRepository.findByTitleContainingIgnoreCase(request.getTitle(), pageable)
                     : museumRepository.findAll(pageable);
