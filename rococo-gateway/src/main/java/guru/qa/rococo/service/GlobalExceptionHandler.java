@@ -1,5 +1,6 @@
 package guru.qa.rococo.service;
 
+import guru.qa.rococo.ex.AlreadyExistsException;
 import guru.qa.rococo.ex.NotFoundException;
 import guru.qa.rococo.ex.RequiredParamException;
 import guru.qa.rococo.model.ErrorJson;
@@ -35,7 +36,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<ErrorJson> handleNotFoundException(@Nonnull RuntimeException ex,
                                                            @Nonnull HttpServletRequest request) {
     LOG.warn("### Resolve Exception in @RestControllerAdvice ", ex);
-    return withStatus("Bad request", HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    return withStatus("Not found", HttpStatus.NOT_FOUND, ex.getMessage(), request);
+  }
+
+  @ExceptionHandler(AlreadyExistsException.class)
+  public ResponseEntity<ErrorJson> handleAlreadyExistsException(@Nonnull RuntimeException ex,
+                                                           @Nonnull HttpServletRequest request) {
+    LOG.warn("### Resolve Exception in @RestControllerAdvice ", ex);
+    return withStatus("Conflict Request", HttpStatus.CONFLICT, ex.getMessage(), request);
   }
 
   @ExceptionHandler(RequiredParamException.class)

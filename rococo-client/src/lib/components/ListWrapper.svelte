@@ -17,6 +17,7 @@
 
     export let bordered = true;
     export let fullPage = true;
+    export let id: string = "wrapper";
 
 </script>
 
@@ -40,7 +41,7 @@
         {/if}
     {/if}
 {:else}
-    <div class="w-100">
+    <div class="w-100" id="list-{id}">
         <slot/>
     </div>
 {/if}

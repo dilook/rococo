@@ -22,6 +22,7 @@
             emptyStateTitle="Пока что список художников пуст. Чтобы пополнить коллекцию, добавьте нового художника"
             dataKey="name"
             successMessage="Добавлен художник"
+            listWrapperId="artist"
     >
         <ArtistList/>
     </CommonPage>

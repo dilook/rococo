@@ -15,6 +15,14 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: 'http://127.0.0.1:9000'
+  grpc:
+    client:
+      channels:
+        rococo-museum:
+          address: 'static://localhost:9091'
+          negotiation-type: plaintext
+          max-inbound-message-size: 8388608
+
   datasource:
     url: 'jdbc:postgresql://localhost:5432/rococo-gateway'
     username: postgres
@@ -56,6 +64,8 @@ logging:
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+    org.springframework.grpc: DEBUG
+    guru.qa.rococo.service.GrpcClientLoggerInterceptor: DEBUG
 
 ---
 spring:

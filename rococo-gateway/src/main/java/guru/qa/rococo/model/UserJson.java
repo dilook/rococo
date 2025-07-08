@@ -16,7 +16,7 @@ public record UserJson(
         @JsonProperty("username")
         String username,
         @JsonProperty("firstname")
-        @Size(min = 3, max = 255, message = "First name can`t be longer than 255 characters")
+        @Size(min = 3, max = 255, message = "First name can`t be shorter than 3 and longer than 255 characters")
         String firstname,
         @JsonProperty("lastname")
         @Size(max = 255, message = "Last name can`t be longer than 255 characters")
