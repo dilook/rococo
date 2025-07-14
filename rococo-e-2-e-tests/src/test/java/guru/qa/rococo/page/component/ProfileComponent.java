@@ -14,5 +14,6 @@ public class ProfileComponent extends BaseComponent<ProfileComponent> {
 
     public void logout() {
         logoutBtn.click();
+        checkAlertMessage("Сессия завершена");
     }
 }

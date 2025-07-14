@@ -1,7 +1,9 @@
 package guru.qa.rococo.test;
 
 import com.codeborne.selenide.Selenide;
+import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
+import guru.qa.rococo.model.rest.UserJson;
 import guru.qa.rococo.page.MainPage;
 import guru.qa.rococo.page.RegisterPage;
 import guru.qa.rococo.utils.RandomDataUtils;
@@ -11,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class RegistrationTest {
 
     @Test
-    void userShouldBeRegisteredWithValidData() {
+    void shouldRegisterUserWithValidData() {
         String username = RandomDataUtils.randomUsername();
         Selenide.open(RegisterPage.URL, RegisterPage.class)
                 .register(username, "12345", "12345")
@@ -24,28 +26,40 @@ public class RegistrationTest {
     }
 
     @Test
-    void errorShouldBeDisplayedWhenPasswordsDoNotMatch() {
+    void shouldDisplayErrorWhenPasswordsDoNotMatch() {
         Selenide.open(RegisterPage.URL, RegisterPage.class)
                 .register(RandomDataUtils.randomUsername(), "12345", "54321")
                 .checkPasswordError("Passwords should be equal");
     }
 
     @Test
-    void errorShouldBeDisplayedForExistingUsername() {
-        String randomUsername = RandomDataUtils.randomUsername();
+    @User
+    void shouldDisplayErrorForExistingUsername(UserJson user) {
         Selenide.open(RegisterPage.URL, RegisterPage.class)
-                .register(randomUsername, "12345", "12345")
-                .checkSuccessMessage();
-        Selenide.open(RegisterPage.URL, RegisterPage.class)
-                .register(randomUsername, "12345", "12345")
-                .checkUsernameError("Username `" + randomUsername + "` already exists");
+                .register(user.username(), "12345", "12345")
+                .checkUsernameError("Username `%s` already exists".formatted(user.username()));
     }
 
     @Test
-    void errorShouldBeDisplayedForShortPassword() {
+    void shouldDisplayErrorForPasswordLessThan3Characters() {
         Selenide.open(RegisterPage.URL, RegisterPage.class)
                 .register(RandomDataUtils.randomUsername(), "1", "1")
                 .checkPasswordError("Allowed password length should be from 3 to 12 characters")
                 .checkPasswordSubmitError("Allowed password length should be from 3 to 12 characters");
+    }
+
+    @Test
+    void shouldDisplayErrorForPasswordMoreThan12Characters() {
+        Selenide.open(RegisterPage.URL, RegisterPage.class)
+                .register(RandomDataUtils.randomUsername(), "1234567891011", "1234567891011")
+                .checkPasswordError("Allowed password length should be from 3 to 12 characters")
+                .checkPasswordSubmitError("Allowed password length should be from 3 to 12 characters");
+    }
+
+    @Test
+    void shouldDisplayErrorForUsernameMoreTHan50Characters() {
+        Selenide.open(RegisterPage.URL, RegisterPage.class)
+                .register(RandomDataUtils.randomSentence(51), "123", "123")
+                .checkUsernameError("Allowed username length should be from 3 to 50 characters");
     }
 }

@@ -2,6 +2,8 @@ package guru.qa.rococo.test;
 
 
 import com.codeborne.selenide.Selenide;
+import guru.qa.rococo.jupiter.annotation.ApiLogin;
+import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.page.MainPage;
 import guru.qa.rococo.page.MuseumCardPage;
@@ -13,10 +15,9 @@ import org.junit.jupiter.api.Test;
 public class MuseumTest {
 
     @Test
+    @User
+    @ApiLogin
     void shouldLoadMuseumPageForUnauthorizedUser() {
-        Selenide.open(MainPage.URL, MainPage.class)
-                .clickLogin()
-                .successLogin("duck", "12345");
         for (int i = 0; i < 4; i++) {
             createMuseum(RandomDataUtils.randomMuseumName());
         }
@@ -42,10 +43,10 @@ public class MuseumTest {
     }
 
     @Test
+    @ApiLogin
+    @User
     void shouldLoadMuseumPageForAuthorizedUser() {
         Selenide.open(MainPage.URL, MainPage.class)
-                .clickLogin()
-                .successLogin("duck", "12345")
                 .goToMuseums()
                 .checkMuseumsSize(4);
     }
@@ -57,11 +58,9 @@ public class MuseumTest {
     }
 
     @Test
+    @ApiLogin
+    @User
     void shouldFindMuseumByTitle() {
-        Selenide.open(MainPage.URL, MainPage.class)
-                .clickLogin()
-                .successLogin("duck", "12345");
-
         String museumName = RandomDataUtils.randomMuseumName();
         createMuseum(museumName);
 
@@ -72,12 +71,12 @@ public class MuseumTest {
     }
 
     @Test
+    @ApiLogin
+    @User
     void shouldAddMuseumByAuthorizedUser() {
         String museumName = RandomDataUtils.randomMuseumName();
 
         Selenide.open(MainPage.URL, MainPage.class)
-                .clickLogin()
-                .successLogin("duck", "12345")
                 .goToMuseums()
                 .addMuseum(museumName,
                         "Австралия",
@@ -88,13 +87,10 @@ public class MuseumTest {
     }
 
     @Test
+    @ApiLogin
+    @User
     void shouldUpdateMuseumByAuthorizedUser() {
         String originalMuseumName = RandomDataUtils.randomMuseumName();
-
-        Selenide.open(MainPage.URL, MainPage.class)
-                .clickLogin()
-                .successLogin("duck", "12345");
-
         createMuseum(originalMuseumName);
 
         String randomCityName = RandomDataUtils.randomCityName();
@@ -107,11 +103,9 @@ public class MuseumTest {
     }
 
     @Test
+    @ApiLogin
+    @User
     void shouldLoadMuseumByPage() {
-        Selenide.open(MainPage.URL, MainPage.class)
-                .clickLogin()
-                .successLogin("duck", "12345");
-
         for (int i = 0; i < 8; i++) {
             createMuseum(RandomDataUtils.randomMuseumName());
         }
@@ -132,6 +126,5 @@ public class MuseumTest {
                 .loadNextPage()
                 .checkMuseumsSize(8);
     }
-
 
 }

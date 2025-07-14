@@ -6,6 +6,7 @@ import guru.qa.rococo.config.Config;
 import guru.qa.rococo.page.component.HeaderComponent;
 import lombok.Getter;
 
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
@@ -33,6 +34,9 @@ public class MainPage extends BasePage<MainPage> {
 
     public void profileAvatarShouldBeVisible() {
         profileBtn.shouldBe(visible);
+    }
+    public void profileAvatarShouldNotExist() {
+        profileBtn.shouldNot(exist, visible);
     }
 
     private void goToItem(String name) {

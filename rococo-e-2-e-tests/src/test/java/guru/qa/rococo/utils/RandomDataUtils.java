@@ -14,11 +14,6 @@ public class RandomDataUtils {
     }
 
     @Nonnull
-    public static String randomName() {
-        return faker.name().firstName();
-    }
-
-    @Nonnull
     public static String randomMuseumName() {
         return faker.letterify("??????????");
     }
@@ -28,19 +23,8 @@ public class RandomDataUtils {
         return faker.address().city();
     }
 
-
     @Nonnull
-    public static String randomSurname() {
-        return faker.name().lastName();
-    }
-
-    @Nonnull
-    public static String randomCategoryName() {
-        return faker.food().fruit();
-    }
-
-    @Nonnull
-    public static String randomSentence(int wordsCount) {
-        return faker.lorem().sentence(wordsCount);
+    public static String randomSentence(int characterCount) {
+        return faker.lorem().fixedString(characterCount);
     }
 }
