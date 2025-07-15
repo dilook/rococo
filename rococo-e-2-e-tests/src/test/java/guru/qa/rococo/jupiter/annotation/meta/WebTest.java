@@ -2,6 +2,8 @@ package guru.qa.rococo.jupiter.annotation.meta;
 
 import guru.qa.rococo.jupiter.extension.ApiLoginExtension;
 import guru.qa.rococo.jupiter.extension.BrowserExtension;
+import guru.qa.rococo.jupiter.extension.MuseumExtension;
+import guru.qa.rococo.jupiter.extension.MuseumsExtension;
 import guru.qa.rococo.jupiter.extension.UserExtension;
 import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,10 +16,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @ExtendWith({
-    BrowserExtension.class,
-    UserExtension.class,
-    ApiLoginExtension.class,
-    AllureJunit5.class
+        BrowserExtension.class,
+        UserExtension.class,
+        MuseumExtension.class,
+        MuseumsExtension.class,
+        ApiLoginExtension.class,
+        AllureJunit5.class
 })
 public @interface WebTest {
 }

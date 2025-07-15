@@ -4,6 +4,7 @@ import guru.qa.rococo.config.Config;
 import guru.qa.rococo.grpc.Country;
 import guru.qa.rococo.grpc.CreateMuseumRequest;
 import guru.qa.rococo.grpc.Geo;
+import guru.qa.rococo.grpc.GetAllCountriesRequest;
 import guru.qa.rococo.grpc.GetAllMuseumsRequest;
 import guru.qa.rococo.grpc.GetMuseumByIdRequest;
 import guru.qa.rococo.grpc.Museum;
@@ -19,6 +20,8 @@ import io.grpc.ManagedChannelBuilder;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
+
+import static guru.qa.rococo.utils.GrpcUtils.safe;
 
 
 public class MuseumGrpcClient {
@@ -37,6 +40,28 @@ public class MuseumGrpcClient {
 
     private final RococoCountryServiceGrpc.RococoCountryServiceBlockingStub countryBlockingStub
             = RococoCountryServiceGrpc.newBlockingStub(channel);
+
+
+    public List<CountryJson> getAllCountries() {
+        return countryBlockingStub.getAllCountries(GetAllCountriesRequest.newBuilder().setPage(0).setSize(200).build())
+                .getCountriesList().stream()
+                .map(country -> new CountryJson(
+                        UUID.fromString(country.getId()),
+                        country.getName()
+                )).toList();
+    }
+
+    public CountryJson getCountryByName(String name) {
+        return getAllCountries().stream()
+                .filter(c -> c.name().equalsIgnoreCase(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Country with name '" + name + "' not found in the system"));
+    }
+
+    public CountryJson getRandomCountry() {
+        return getAllCountries().stream().findAny().get();
+    }
 
     public List<MuseumJson> getAllMuseums(int page, int size, String title) {
         GetAllMuseumsRequest request = GetAllMuseumsRequest.newBuilder()
@@ -63,13 +88,13 @@ public class MuseumGrpcClient {
     public MuseumJson createMuseum(@Nonnull MuseumJson museumJson) {
         CreateMuseumRequest request = CreateMuseumRequest.newBuilder()
                 .setTitle(museumJson.title())
-                .setDescription(museumJson.description() != null ? museumJson.description() : "")
-                .setPhoto(museumJson.photo() != null ? museumJson.photo() : "")
+                .setDescription(safe(museumJson.description()))
+                .setPhoto(safe(museumJson.photo()))
                 .setGeo(Geo.newBuilder()
-                        .setCity(museumJson.geo().city() != null ? museumJson.geo().city() : "")
+                        .setCity(safe(museumJson.geo().city()))
                         .setCountry(Country.newBuilder()
-                                .setId(museumJson.geo().country().id().toString())
-                                .setName(museumJson.geo().country().name() != null ? museumJson.geo().country().name() : "")
+                                .setId(safe(museumJson.geo().country().id()))
+                                .setName(safe(museumJson.geo().country().name()))
                                 .build())
                 ).build();
 
