@@ -1,0 +1,26 @@
+package guru.qa.rococo.model.rest;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.UUID;
+
+public record MuseumJson(
+        @JsonProperty("id")
+        UUID id,
+        @JsonProperty("title")
+        String title,
+        @JsonProperty("description")
+        String description,
+        @JsonProperty("photo")
+        String photo,
+        @JsonProperty("geo")
+        Geo geo
+) {
+
+    public record Geo(
+            @JsonProperty("city")
+            String city,
+            @JsonProperty("country")
+            CountryJson country
+    ) {}
+}
