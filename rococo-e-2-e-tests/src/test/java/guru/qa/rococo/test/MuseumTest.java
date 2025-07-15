@@ -3,8 +3,11 @@ package guru.qa.rococo.test;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.ApiLogin;
+import guru.qa.rococo.jupiter.annotation.Museum;
+import guru.qa.rococo.jupiter.annotation.Museums;
 import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
+import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.page.MainPage;
 import guru.qa.rococo.page.MuseumCardPage;
 import guru.qa.rococo.page.MuseumPage;
@@ -15,31 +18,10 @@ import org.junit.jupiter.api.Test;
 public class MuseumTest {
 
     @Test
-    @User
-    @ApiLogin
+    @Museums(count = 4)
     void shouldLoadMuseumPageForUnauthorizedUser() {
-        for (int i = 0; i < 4; i++) {
-            createMuseum(RandomDataUtils.randomMuseumName());
-        }
-
-        Selenide.open(MainPage.URL, MainPage.class)
-                .getHeader()
-                .clickAvatar()
-                .logout();
         Selenide.open(MuseumPage.URL, MuseumPage.class)
                 .checkMuseumsSize(4);
-    }
-
-    private void createMuseum(String museumName) {
-        Selenide.open(MuseumPage.URL, MuseumPage.class)
-                .checkThatPageLoaded()
-                .addMuseum(museumName,
-                        "Австралия",
-                        "Канберра",
-                        "img/lyvr.png",
-                        "Музей %s — один из крупнейших и самый популярный художественный музей мира.".formatted(museumName)
-                )
-                .checkAlertMessage("Добавлен музей: %s".formatted(museumName));
     }
 
     @Test
@@ -60,13 +42,11 @@ public class MuseumTest {
     @Test
     @ApiLogin
     @User
-    void shouldFindMuseumByTitle() {
-        String museumName = RandomDataUtils.randomMuseumName();
-        createMuseum(museumName);
-
+    @Museum
+    void shouldFindMuseumByTitle(MuseumJson museum) {
         Selenide.open(MuseumPage.URL, MuseumPage.class)
                 .checkMuseumsSize(4) // wait ending of first page request
-                .checkMuseum(museumName)
+                .checkMuseum(museum.title())
                 .checkMuseumsSize(1);
     }
 
@@ -81,7 +61,7 @@ public class MuseumTest {
                 .addMuseum(museumName,
                         "Австралия",
                         "Канберра",
-                        "img/lyvr.png",
+                        "img/lyvr.jpg",
                         "Музей" + museumName + " — один из крупнейших и самый популярный художественный музей мира."
                 ).checkMuseum(museumName);
     }
@@ -89,13 +69,11 @@ public class MuseumTest {
     @Test
     @ApiLogin
     @User
-    void shouldUpdateMuseumByAuthorizedUser() {
-        String originalMuseumName = RandomDataUtils.randomMuseumName();
-        createMuseum(originalMuseumName);
-
+    @Museum
+    void shouldUpdateMuseumByAuthorizedUser(MuseumJson museum) {
         String randomCityName = RandomDataUtils.randomCityName();
         Selenide.open(MuseumPage.URL, MuseumPage.class)
-                .clickTo(originalMuseumName)
+                .clickTo(museum.title())
                 .editMuseum()
                 .setCity(randomCityName)
                 .submitForm();
@@ -105,11 +83,8 @@ public class MuseumTest {
     @Test
     @ApiLogin
     @User
+    @Museums(count = 8)
     void shouldLoadMuseumByPage() {
-        for (int i = 0; i < 8; i++) {
-            createMuseum(RandomDataUtils.randomMuseumName());
-        }
-
         Selenide.open(MuseumPage.URL, MuseumPage.class)
                 .checkMuseumsSize(4)
                 .loadNextPage()
