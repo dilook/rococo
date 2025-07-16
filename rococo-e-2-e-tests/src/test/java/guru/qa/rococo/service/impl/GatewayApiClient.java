@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static java.util.Objects.requireNonNull;
 
@@ -79,9 +80,13 @@ public class GatewayApiClient extends RestClient {
     @NotNull
     public CountryJson getRandomCountry(String token) {
         try {
-            Response<RestResponsePage<CountryJson>> response = museumApi.getAllCountry(token,0, 100, null).execute();
+            Response<RestResponsePage<CountryJson>> response = museumApi.getAllCountry(token, 0, 100, null).execute();
             Assertions.assertEquals(200, response.code());
-            return requireNonNull(response.body()).stream().findAny().orElseThrow(() -> new RuntimeException("No country found"));
+            return requireNonNull(response.body()).stream()
+                    .skip(ThreadLocalRandom.current().nextInt(response.body().getSize()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("No country found"));
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

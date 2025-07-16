@@ -12,14 +12,13 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
-import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+
+import static guru.qa.rococo.utils.ResourceUtils.getDataImageBase64FromResource;
 
 @ParametersAreNonnullByDefault
 public class MuseumsExtension implements BeforeEachCallback, ParameterResolver {
@@ -65,25 +64,17 @@ public class MuseumsExtension implements BeforeEachCallback, ParameterResolver {
     
     private MuseumJson createMuseumJson() {
         final MuseumJson museum;
-        try {
-            ClassPathResource imageResource = new ClassPathResource("img/lyvr.jpg");
-            byte[] imageBytes = imageResource.getContentAsByteArray();
-            String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(imageBytes);
-
-            CountryJson country = museumClient.getRandomCountry();
-            museum = new MuseumJson(
-                    null,
-                    RandomDataUtils.randomMuseumName(),
-                    RandomDataUtils.randomSentence(15),
-                    base64Image,
-                    new MuseumJson.Geo(
-                            RandomDataUtils.randomCityName(),
-                            country
-                    )
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        CountryJson country = museumClient.getRandomCountry();
+        museum = new MuseumJson(
+                null,
+                RandomDataUtils.randomMuseumName(),
+                RandomDataUtils.randomSentence(15),
+                getDataImageBase64FromResource("img/lyvr.jpg"),
+                new MuseumJson.Geo(
+                        RandomDataUtils.randomCityName(),
+                        country
+                )
+        );
         return museum;
     }
 
