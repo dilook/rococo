@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Museum {
+public @interface TestMuseum {
     String title() default "";
     String country() default "Россия";
     String city() default "Москва";

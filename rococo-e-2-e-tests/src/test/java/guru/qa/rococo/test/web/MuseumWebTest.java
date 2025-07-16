@@ -3,8 +3,8 @@ package guru.qa.rococo.test.web;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.ApiLogin;
-import guru.qa.rococo.jupiter.annotation.Museum;
-import guru.qa.rococo.jupiter.annotation.Museums;
+import guru.qa.rococo.jupiter.annotation.TestMuseum;
+import guru.qa.rococo.jupiter.annotation.TestMuseums;
 import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.model.rest.MuseumJson;
@@ -15,10 +15,10 @@ import guru.qa.rococo.utils.RandomDataUtils;
 import org.junit.jupiter.api.Test;
 
 @WebTest
-public class MuseumTest {
+public class MuseumWebTest {
 
     @Test
-    @Museums(count = 4)
+    @TestMuseums(count = 4)
     void shouldLoadMuseumPageForUnauthorizedUser() {
         Selenide.open(MuseumPage.URL, MuseumPage.class)
                 .checkMuseumsSize(4);
@@ -42,7 +42,7 @@ public class MuseumTest {
     @Test
     @ApiLogin
     @User
-    @Museum
+    @TestMuseum
     void shouldFindMuseumByTitle(MuseumJson museum) {
         Selenide.open(MuseumPage.URL, MuseumPage.class)
                 .checkMuseumsSize(4) // wait ending of first page request
@@ -69,7 +69,7 @@ public class MuseumTest {
     @Test
     @ApiLogin
     @User
-    @Museum
+    @TestMuseum
     void shouldUpdateMuseumByAuthorizedUser(MuseumJson museum) {
         String randomCityName = RandomDataUtils.randomCityName();
         Selenide.open(MuseumPage.URL, MuseumPage.class)
@@ -83,7 +83,7 @@ public class MuseumTest {
     @Test
     @ApiLogin
     @User
-    @Museums(count = 8)
+    @TestMuseums(count = 8)
     void shouldLoadMuseumByPage() {
         Selenide.open(MuseumPage.URL, MuseumPage.class)
                 .checkMuseumsSize(4)

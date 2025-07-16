@@ -6,6 +6,7 @@ import guru.qa.rococo.grpc.Country;
 import guru.qa.rococo.grpc.GetAllCountriesListRequest;
 import guru.qa.rococo.grpc.GetAllCountriesRequest;
 import guru.qa.rococo.grpc.GetAllCountriesResponse;
+import guru.qa.rococo.grpc.GetCountryRequest;
 import guru.qa.rococo.grpc.RococoCountryServiceGrpc;
 import guru.qa.rococo.utils.GrpcUtils;
 import io.grpc.Status;
@@ -23,6 +24,25 @@ public class CountryGrpcService extends RococoCountryServiceGrpc.RococoCountrySe
 
     public CountryGrpcService(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
+    }
+
+    @Override
+    public void getCountry(GetCountryRequest request, StreamObserver<Country> responseObserver) {
+        try {
+            CountryEntity country = countryRepository.findByName(request.getName());
+            if (country != null) {
+                responseObserver.onNext(convertToGrpcCountry(country));
+                responseObserver.onCompleted();
+            } else {
+                responseObserver.onError(Status.NOT_FOUND
+                        .withDescription("Country with name: " + request.getName() + " not found")
+                        .asRuntimeException());
+            }
+        } catch (Exception e) {
+            responseObserver.onError(Status.INTERNAL
+                    .withDescription("Error retrieving countries list: " + e.getMessage())
+                    .asRuntimeException());
+        }
     }
 
     @Override

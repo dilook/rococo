@@ -6,6 +6,7 @@ import guru.qa.rococo.grpc.CreateMuseumRequest;
 import guru.qa.rococo.grpc.Geo;
 import guru.qa.rococo.grpc.GetAllCountriesRequest;
 import guru.qa.rococo.grpc.GetAllMuseumsRequest;
+import guru.qa.rococo.grpc.GetCountryRequest;
 import guru.qa.rococo.grpc.GetMuseumByIdRequest;
 import guru.qa.rococo.grpc.Museum;
 import guru.qa.rococo.grpc.RococoCountryServiceGrpc;
@@ -16,6 +17,7 @@ import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.utils.GrpcConsoleInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import io.qameta.allure.grpc.AllureGrpc;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -30,7 +32,7 @@ public class MuseumGrpcClient {
 
     private final Channel channel = ManagedChannelBuilder
             .forAddress(CFG.museumGrpcAddress(), CFG.museumGrpcPort())
-            //.intercept(new AllureGrpcInterceptor())
+            .intercept(new AllureGrpc())
             .intercept(new GrpcConsoleInterceptor())
             .usePlaintext()
             .build();
@@ -52,11 +54,8 @@ public class MuseumGrpcClient {
     }
 
     public CountryJson getCountryByName(String name) {
-        return getAllCountries().stream()
-                .filter(c -> c.name().equalsIgnoreCase(name))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Country with name '" + name + "' not found in the system"));
+        Country country = countryBlockingStub.getCountry(GetCountryRequest.newBuilder().setName(name).build());
+        return new CountryJson(UUID.fromString(country.getId()), country.getName());
     }
 
     public CountryJson getRandomCountry() {

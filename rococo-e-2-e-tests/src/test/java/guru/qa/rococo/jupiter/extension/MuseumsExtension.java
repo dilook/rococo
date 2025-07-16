@@ -1,7 +1,7 @@
 package guru.qa.rococo.jupiter.extension;
 
-import guru.qa.rococo.jupiter.annotation.Museum;
-import guru.qa.rococo.jupiter.annotation.Museums;
+import guru.qa.rococo.jupiter.annotation.TestMuseum;
+import guru.qa.rococo.jupiter.annotation.TestMuseums;
 import guru.qa.rococo.model.rest.CountryJson;
 import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.service.MuseumGrpcClient;
@@ -44,9 +44,9 @@ public class MuseumsExtension implements BeforeEachCallback, ParameterResolver {
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Museums.class)
+        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestMuseums.class)
                 .ifPresent(museumAnno -> {
-                    AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Museum.class).ifPresent(museum -> {
+                    AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestMuseum.class).ifPresent(museum -> {
                         throw new IllegalStateException("Only @Museum or @Museums annotation is allowed per test method!");
                     });
                     
