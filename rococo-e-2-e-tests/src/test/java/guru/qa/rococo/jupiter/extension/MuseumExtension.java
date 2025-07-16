@@ -10,12 +10,11 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
-import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.io.IOException;
-import java.util.Base64;
+
+import static guru.qa.rococo.utils.ResourceUtils.getDataImageBase64FromResource;
 
 @ParametersAreNonnullByDefault
 public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
@@ -46,25 +45,16 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Museum.class)
                 .ifPresent(museumAnno -> {
                     final MuseumJson museum;
-                    try {
-                        ClassPathResource imageResource = new ClassPathResource(museumAnno.imagePath());
-                        byte[] imageBytes = imageResource.getContentAsByteArray();
-                        String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(imageBytes);
-
-                        museum = new MuseumJson(
-                                null,
-                                "".equals(museumAnno.title()) ? RandomDataUtils.randomMuseumName() : museumAnno.title(),
-                                museumAnno.description(),
-                                base64Image,
-                                new MuseumJson.Geo(
-                                        museumAnno.city(),
-                                        museumClient.getCountryByName(museumAnno.country())
-                                )
-                        );
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
+                    museum = new MuseumJson(
+                            null,
+                            "".equals(museumAnno.title()) ? RandomDataUtils.randomMuseumName() : museumAnno.title(),
+                            museumAnno.description(),
+                            getDataImageBase64FromResource(museumAnno.imagePath()),
+                            new MuseumJson.Geo(
+                                    museumAnno.city(),
+                                    museumClient.getCountryByName(museumAnno.country())
+                            )
+                    );
                     MuseumJson createdMuseum = museumClient.createMuseum(museum);
                     setMuseum(createdMuseum);
                 });
