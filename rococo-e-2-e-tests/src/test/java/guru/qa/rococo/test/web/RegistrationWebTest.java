@@ -10,7 +10,7 @@ import guru.qa.rococo.utils.RandomDataUtils;
 import org.junit.jupiter.api.Test;
 
 @WebTest
-public class RegistrationTest {
+public class RegistrationWebTest {
 
     @Test
     void shouldRegisterUserWithValidData() {

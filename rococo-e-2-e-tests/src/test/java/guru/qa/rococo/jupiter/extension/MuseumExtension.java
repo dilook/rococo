@@ -1,6 +1,6 @@
 package guru.qa.rococo.jupiter.extension;
 
-import guru.qa.rococo.jupiter.annotation.Museum;
+import guru.qa.rococo.jupiter.annotation.TestMuseum;
 import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.service.MuseumGrpcClient;
 import guru.qa.rococo.utils.RandomDataUtils;
@@ -42,7 +42,7 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Museum.class)
+        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestMuseum.class)
                 .ifPresent(museumAnno -> {
                     final MuseumJson museum;
                     museum = new MuseumJson(

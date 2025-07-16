@@ -1,7 +1,7 @@
 package guru.qa.rococo.test.rest;
 
 import guru.qa.rococo.jupiter.annotation.ApiLogin;
-import guru.qa.rococo.jupiter.annotation.Museum;
+import guru.qa.rococo.jupiter.annotation.TestMuseum;
 import guru.qa.rococo.jupiter.annotation.Token;
 import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.RestTest;
@@ -69,7 +69,7 @@ public class MuseumRestTest {
     @Test
     @ApiLogin
     @User
-    @Museum
+    @TestMuseum
     void shouldUpdateMuseumUsingGatewayApiClient(@Token String token, MuseumJson createdMuseum) {
         MuseumJson updatedMuseum = new MuseumJson(
                 createdMuseum.id(),

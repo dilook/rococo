@@ -9,7 +9,7 @@ import guru.qa.rococo.page.MainPage;
 import org.junit.jupiter.api.Test;
 
 @WebTest
-public class LoginTest {
+public class LoginWebTest {
 
     @Test
     @User

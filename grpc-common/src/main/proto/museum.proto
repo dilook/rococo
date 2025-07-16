@@ -17,6 +17,7 @@ service RococoMuseumService {
 
 service RococoCountryService {
   rpc GetAllCountries(GetAllCountriesRequest) returns (GetAllCountriesResponse);
+  rpc GetCountry(GetCountryRequest) returns (Country);
   rpc GetAllCountriesList(GetAllCountriesListRequest) returns (stream Country);
 }
 
@@ -87,6 +88,10 @@ message GetAllCountriesRequest {
   int32 page = 1;
   int32 size = 2;
   repeated string sort = 3;
+}
+
+message GetCountryRequest {
+  string name = 1;
 }
 
 // Response message for getting all countries with pagination
