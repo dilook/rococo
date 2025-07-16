@@ -60,6 +60,10 @@ public class MuseumRestTest {
         assertNotNull(retrievedMuseum);
         assertNotNull(retrievedMuseum.id());
         assertEquals(retrievedMuseum.title(), createdMuseum.title());
+        assertEquals(retrievedMuseum.description(), createdMuseum.description());
+        assertEquals(retrievedMuseum.photo(), createdMuseum.photo());
+        assertEquals(retrievedMuseum.geo().city(), createdMuseum.geo().city());
+        assertEquals(retrievedMuseum.geo().country().name(), createdMuseum.geo().country().name());
     }
 
     @Test
