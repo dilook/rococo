@@ -16,8 +16,8 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="rococo-gateway" transaction-type="JTA">
-        <jta-data-source>java:comp/env/jdbc/rococo-gateway</jta-data-source>
+    <persistence-unit name="rococo-userdata" transaction-type="JTA">
+        <jta-data-source>java:comp/env/jdbc/rococo-userdata</jta-data-source>
         <class>guru.qa.rococo.data.entity.userdata.UserEntity</class>
 
         <properties>

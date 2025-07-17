@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package guru.qa.rococo.grpc;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoArtistProto";
+
+service RococoArtistService {
+  rpc GetAllArtists(GetAllArtistsRequest) returns (GetAllArtistsResponse);
+  rpc GetArtistById(GetArtistByIdRequest) returns (Artist);
+  rpc CreateArtist(CreateArtistRequest) returns (Artist);
+  rpc UpdateArtist(UpdateArtistRequest) returns (Artist);
+}
+
+// Artist message
+message Artist {
+  string id = 1;
+  string name = 2;
+  string biography = 3;
+  string photo = 4;
+}
+
+// Request message for getting all artists
+message GetAllArtistsRequest {
+  int32 page = 1;
+  int32 size = 2;
+  repeated string sort = 3;
+  optional string name = 4;
+}
+
+// Response message for getting all artists
+message GetAllArtistsResponse {
+  repeated Artist artists = 1;
+  int32 total_pages = 2;
+  int64 total_elements = 3;
+  int32 current_page = 4;
+  int32 page_size = 5;
+  bool first = 6;
+  bool last = 7;
+}
+
+// Request message for getting artist by ID
+message GetArtistByIdRequest {
+  string id = 1;
+}
+
+// Request message for creating artist
+message CreateArtistRequest {
+  string name = 1;
+  string biography = 2;
+  string photo = 3;
+}
+
+// Request message for updating artist
+message UpdateArtistRequest {
+  string id = 1;
+  string name = 2;
+  string biography = 3;
+  string photo = 4;
+}

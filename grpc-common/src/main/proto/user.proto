@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package guru.qa.rococo.grpc;
+
+option java_multiple_files = true;
+option java_package = "guru.qa.rococo.grpc";
+option java_outer_classname = "RococoUserProto";
+
+service RococoUserService {
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc UpdateUser(UpdateUserRequest) returns (User);
+}
+
+// User message
+message User {
+  string id = 1;
+  string username = 2;
+  string firstname = 3;
+  string lastname = 4;
+  string avatar = 5;
+}
+
+// Request message for getting user by username
+message GetUserRequest {
+  string username = 1;
+}
+
+// Request message for updating user
+message UpdateUserRequest {
+  string username = 1;
+  string firstname = 2;
+  string lastname = 3;
+  string avatar = 4;
+}

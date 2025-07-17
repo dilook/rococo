@@ -1,7 +1,7 @@
 package guru.qa.rococo.controller;
 
 import guru.qa.rococo.model.CountryJson;
-import guru.qa.rococo.service.CountryService;
+import guru.qa.rococo.service.api.CountryGrpcClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,19 +15,19 @@ import java.util.List;
 @RequestMapping("/api/country")
 public class CountryController {
 
-    private final CountryService countryService;
+    private final CountryGrpcClient countryGrpcClient;
 
-    public CountryController(CountryService countryService) {
-        this.countryService = countryService;
+    public CountryController(CountryGrpcClient countryGrpcClient) {
+        this.countryGrpcClient = countryGrpcClient;
     }
 
     @GetMapping
     Page<CountryJson> getAllCountry(@PageableDefault Pageable pageable) {
-        return countryService.getAllCountry(pageable);
+        return countryGrpcClient.getAllCountries(pageable);
     }
 
     @GetMapping("/all")
     List<CountryJson> getAllCountry() {
-        return countryService.getAllCountry();
+        return countryGrpcClient.getAllCountriesList();
     }
 }

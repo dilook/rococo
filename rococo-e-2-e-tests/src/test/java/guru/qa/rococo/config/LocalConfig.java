@@ -41,7 +41,7 @@ enum LocalConfig implements Config {
     @Nonnull
     @Override
     public String userdataJdbcUrl() {
-        return "jdbc:postgresql://127.0.0.1:5432/rococo-gateway";
+        return "jdbc:postgresql://127.0.0.1:5432/rococo-userdata";
     }
 
     @NotNull
