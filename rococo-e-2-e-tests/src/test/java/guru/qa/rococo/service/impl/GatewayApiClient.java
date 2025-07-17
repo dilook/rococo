@@ -33,7 +33,8 @@ public class GatewayApiClient extends RestClient {
     public RestResponsePage<MuseumJson> getAllMuseum(int page, int size, @Nullable String title) {
         try {
             Response<RestResponsePage<MuseumJson>> response = museumApi.getAllMuseum(page, size, title).execute();
-            Assertions.assertEquals(200, response.code());
+            Assertions.assertEquals(200, response.code(),
+                    "Response code: " + response.code() + ", response message: " + response.message());
             return requireNonNull(response.body());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -45,7 +46,8 @@ public class GatewayApiClient extends RestClient {
     public MuseumJson getMuseumById(UUID id) {
         try {
             Response<MuseumJson> response = museumApi.getMuseumById(id).execute();
-            Assertions.assertTrue(response.isSuccessful());
+            Assertions.assertEquals(200, response.code(),
+                    "Response code: " + response.code() + ", response message: " + response.message());
             return requireNonNull(response.body());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -57,7 +59,7 @@ public class GatewayApiClient extends RestClient {
     public MuseumJson updateMuseum(String bearerToken, MuseumJson museumJson) {
         try {
             Response<MuseumJson> response = museumApi.updateMuseum(bearerToken, museumJson).execute();
-            Assertions.assertEquals(200, response.code());
+            Assertions.assertEquals(200, response.code(), "Response code: " + response.code());
             return requireNonNull(response.body());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -69,7 +71,7 @@ public class GatewayApiClient extends RestClient {
     public MuseumJson createMuseum(String bearerToken, MuseumJson museumJson) {
         try {
             Response<MuseumJson> response = museumApi.createMuseum(bearerToken, museumJson).execute();
-            Assertions.assertEquals(200, response.code());
+            Assertions.assertEquals(200, response.code(), "Response code: " + response.code());
             return requireNonNull(response.body());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -81,7 +83,7 @@ public class GatewayApiClient extends RestClient {
     public CountryJson getRandomCountry(String token) {
         try {
             Response<RestResponsePage<CountryJson>> response = museumApi.getAllCountry(token, 0, 100, null).execute();
-            Assertions.assertEquals(200, response.code());
+            Assertions.assertEquals(200, response.code(), "Response code: " + response.code());
             return requireNonNull(response.body()).stream()
                     .skip(ThreadLocalRandom.current().nextInt(response.body().getSize()))
                     .findFirst()

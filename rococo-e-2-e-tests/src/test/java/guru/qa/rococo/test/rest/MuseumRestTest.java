@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import static guru.qa.rococo.utils.ResourceUtils.getDataImageBase64FromResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RestTest
@@ -83,5 +84,55 @@ public class MuseumRestTest {
 
         assertNotNull(result);
         assertTrue(result.title().startsWith("Updated"));
+    }
+
+    @Test
+    void shouldNotCreateMuseumForUnauthorizedUser() {
+        MuseumJson museum = new MuseumJson(
+                null,
+                RandomDataUtils.randomMuseumName(),
+                RandomDataUtils.randomSentence(12),
+                getDataImageBase64FromResource("img/lyvr.jpg"),
+                new MuseumJson.Geo(
+                        RandomDataUtils.randomCityName(),
+                        new CountryJson(null, "Test Country")
+                )
+        );
+
+        // Test with a null token
+        AssertionError assertionError = assertThrows(AssertionError.class, () -> gatewayApiClient.createMuseum(null, museum));
+        assertTrue(assertionError.getMessage().contains("Response code: 401"));
+
+        // Test with an empty token
+        assertionError = assertThrows(AssertionError.class, () -> gatewayApiClient.createMuseum("", museum));
+        assertTrue(assertionError.getMessage().contains("Response code: 401"));
+
+        // Test with invalid token
+        assertionError = assertThrows(AssertionError.class, () -> gatewayApiClient.createMuseum("Bearer invalid-token", museum));
+        assertTrue(assertionError.getMessage().contains("Response code: 401"));
+    }
+
+    @Test
+    @TestMuseum
+    void shouldNotUpdateMuseumForUnauthorizedUser(MuseumJson createdMuseum) {
+        MuseumJson updatedMuseum = new MuseumJson(
+                createdMuseum.id(),
+                "Updated " + createdMuseum.title(),
+                createdMuseum.description(),
+                createdMuseum.photo(),
+                createdMuseum.geo()
+        );
+
+        // Test with a null token
+        AssertionError assertionError = assertThrows(AssertionError.class, () -> gatewayApiClient.updateMuseum(null, updatedMuseum));
+        assertTrue(assertionError.getMessage().contains("Response code: 401"));
+
+        // Test with an empty token
+        assertionError = assertThrows(AssertionError.class, () -> gatewayApiClient.updateMuseum("", updatedMuseum));
+        assertTrue(assertionError.getMessage().contains("Response code: 401"));
+
+        // Test with invalid token
+        assertionError = assertThrows(AssertionError.class, () -> gatewayApiClient.updateMuseum("Bearer invalid-token", updatedMuseum));
+        assertTrue(assertionError.getMessage().contains("Response code: 401"));
     }
 }

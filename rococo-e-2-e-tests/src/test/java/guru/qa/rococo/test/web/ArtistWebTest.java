@@ -7,7 +7,6 @@ import guru.qa.rococo.jupiter.annotation.TestArtists;
 import guru.qa.rococo.jupiter.annotation.User;
 import guru.qa.rococo.jupiter.annotation.meta.WebTest;
 import guru.qa.rococo.model.rest.ArtistJson;
-import guru.qa.rococo.model.rest.UserJson;
 import guru.qa.rococo.page.ArtistCardPage;
 import guru.qa.rococo.page.ArtistPage;
 import guru.qa.rococo.page.MainPage;
