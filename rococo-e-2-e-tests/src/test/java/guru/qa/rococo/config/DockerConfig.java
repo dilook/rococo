@@ -55,4 +55,10 @@ enum DockerConfig implements Config {
         return "museum.rococo.dc";
     }
 
+    @NotNull
+    @Override
+    public String artistGrpcAddress() {
+        return "artist.rococo.dc";
+    }
+
 }

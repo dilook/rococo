@@ -1,5 +1,7 @@
 package guru.qa.rococo.jupiter.annotation.meta;
 
+import guru.qa.rococo.jupiter.extension.ArtistExtension;
+import guru.qa.rococo.jupiter.extension.ArtistsExtension;
 import guru.qa.rococo.jupiter.extension.MuseumExtension;
 import guru.qa.rococo.jupiter.extension.MuseumsExtension;
 import guru.qa.rococo.jupiter.extension.UserExtension;
@@ -17,7 +19,9 @@ import java.lang.annotation.Target;
         UserExtension.class,
         MuseumExtension.class,
         MuseumsExtension.class,
-        AllureJunit5.class
+        AllureJunit5.class,
+        ArtistExtension.class,
+        ArtistsExtension.class
 })
 public @interface RestTest {
 }

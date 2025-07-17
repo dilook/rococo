@@ -27,4 +27,14 @@ public class RandomDataUtils {
     public static String randomSentence(int characterCount) {
         return faker.lorem().fixedString(characterCount);
     }
+
+    @Nonnull
+    public static String randomArtistName() {
+        return faker.name().fullName();
+    }
+
+    @Nonnull
+    public static String randomArtistBiography() {
+        return faker.lorem().sentence(20);
+    }
 }

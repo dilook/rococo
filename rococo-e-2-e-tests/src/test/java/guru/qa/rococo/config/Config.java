@@ -38,4 +38,11 @@ public interface Config {
         return 9091;
     }
 
+    @Nonnull
+    String artistGrpcAddress();
+
+    default int artistGrpcPort() {
+        return 9090;
+    }
+
 }

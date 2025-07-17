@@ -1,6 +1,8 @@
 package guru.qa.rococo.jupiter.annotation.meta;
 
 import guru.qa.rococo.jupiter.extension.ApiLoginExtension;
+import guru.qa.rococo.jupiter.extension.ArtistExtension;
+import guru.qa.rococo.jupiter.extension.ArtistsExtension;
 import guru.qa.rococo.jupiter.extension.BrowserExtension;
 import guru.qa.rococo.jupiter.extension.MuseumExtension;
 import guru.qa.rococo.jupiter.extension.MuseumsExtension;
@@ -20,6 +22,8 @@ import java.lang.annotation.Target;
         UserExtension.class,
         MuseumExtension.class,
         MuseumsExtension.class,
+        ArtistsExtension.class,
+        ArtistExtension.class,
         ApiLoginExtension.class,
         AllureJunit5.class
 })
