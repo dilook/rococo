@@ -64,7 +64,8 @@ public class MuseumGrpcTest extends BaseGrpcTest {
         // Verify that museums are sorted by title
         for (int i = 1; i < museumsList.size(); i++) {
             Assertions.assertTrue(
-                    museumsList.get(i - 1).getTitle().compareTo(museumsList.get(i).getTitle()) <= 0
+                    museumsList.get(i - 1).getTitle().compareTo(museumsList.get(i).getTitle()) <= 0,
+                    "Museum '" + museumsList.get(i - 1).getTitle() + "' should be before '" + museumsList.get(i).getTitle() + "' in the list"
             );
         }
     }

@@ -1,7 +1,7 @@
 package guru.qa.rococo.controller;
 
 import guru.qa.rococo.model.ArtistJson;
-import guru.qa.rococo.service.ArtistService;
+import guru.qa.rococo.service.api.ArtistGrpcClient;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,30 +21,30 @@ import java.util.UUID;
 @RequestMapping("/api/artist")
 public class ArtistController {
 
-    private final ArtistService artistService;
+    private final ArtistGrpcClient artistGrpcClient;
 
-    public ArtistController(ArtistService artistService) {
-        this.artistService = artistService;
+    public ArtistController(ArtistGrpcClient artistGrpcClient) {
+        this.artistGrpcClient = artistGrpcClient;
     }
 
     @GetMapping
     Page<ArtistJson> getAllArtist(@PageableDefault Pageable pageable,
                                   @RequestParam(required = false) String name) {
-        return artistService.getAllArtist(pageable, name);
+        return artistGrpcClient.getAllArtist(pageable, name);
     }
 
     @GetMapping("/{id}")
     ArtistJson getArtistById(@PathVariable UUID id) {
-        return artistService.getArtistById(id);
+        return artistGrpcClient.getArtistById(id);
     }
 
     @PatchMapping
     ArtistJson updateArtist(@RequestBody @Valid ArtistJson artistJson) {
-        return artistService.updateArtist(artistJson);
+        return artistGrpcClient.updateArtist(artistJson);
     }
 
     @PostMapping
     ArtistJson createArtist(@RequestBody @Valid ArtistJson artistJson) {
-        return artistService.createArtist(artistJson);
+        return artistGrpcClient.createArtist(artistJson);
     }
 }
