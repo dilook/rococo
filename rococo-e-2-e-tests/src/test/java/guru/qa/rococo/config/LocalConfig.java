@@ -56,4 +56,10 @@ enum LocalConfig implements Config {
         return "127.0.0.1";
     }
 
+    @NotNull
+    @Override
+    public String artistGrpcAddress() {
+        return "127.0.0.1";
+    }
+
 }

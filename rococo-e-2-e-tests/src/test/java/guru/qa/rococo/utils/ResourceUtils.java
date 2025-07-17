@@ -1,5 +1,6 @@
 package guru.qa.rococo.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class ResourceUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "data:image/png;base64," + Base64.getEncoder().encodeToString(imageBytes);
+        String extension = StringUtils.substringAfter(path, ".");
+        return "data:image/" + extension + ";base64," + Base64.getEncoder().encodeToString(imageBytes);
     }
 }

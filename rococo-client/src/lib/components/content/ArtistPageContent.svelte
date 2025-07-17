@@ -158,7 +158,7 @@
                 <button class="btn variant-filled-primary m-3 mx-auto block w-full" type="button" on:click={clickAddButton}>Добавить картину</button>
             {/if}
         </div>
-        <p class="col-span-2 w-4/5 m-2">{$singleArtistStore?.data?.biography}</p>
+        <p id="biography" class="col-span-2 w-4/5 m-2">{$singleArtistStore?.data?.biography}</p>
     </section>
     <section class="p-4">
         <ListWrapper data={$singleArtistStore.paintings}

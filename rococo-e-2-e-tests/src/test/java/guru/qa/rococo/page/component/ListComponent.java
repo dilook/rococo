@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 
 import static com.codeborne.selenide.CollectionCondition.allMatch;
 import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThanOrEqual;
 import static com.codeborne.selenide.CollectionCondition.textsInAnyOrder;
 import static com.codeborne.selenide.Condition.text;
 
@@ -29,6 +30,11 @@ public class ListComponent extends BaseComponent<ListComponent> {
 
     public void checkItemsSize(int expectedSize) {
         this.items.shouldHave(size(expectedSize))
+                .shouldBe(allMatch("", WebElement::isDisplayed));
+    }
+
+    public void checkItemsSizeMore(int expectedSize) {
+        this.items.shouldHave(sizeGreaterThanOrEqual(expectedSize))
                 .shouldBe(allMatch("", WebElement::isDisplayed));
     }
 
