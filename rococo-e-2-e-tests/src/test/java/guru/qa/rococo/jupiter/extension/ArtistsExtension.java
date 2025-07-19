@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,21 +25,6 @@ public class ArtistsExtension implements BeforeEachCallback, ParameterResolver {
 
     private final ArtistGrpcClient artistClient = new ArtistGrpcClient();
 
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static List<ArtistJson> createdArtists() {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        return context.getStore(NAMESPACE).get(context.getUniqueId(), List.class);
-    }
-
-    public static void setArtists(List<ArtistJson> artists) {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        context.getStore(NAMESPACE).put(
-                context.getUniqueId(),
-                artists
-        );
-    }
-
     @Override
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestArtists.class)
@@ -48,7 +32,7 @@ public class ArtistsExtension implements BeforeEachCallback, ParameterResolver {
                     AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestArtist.class).ifPresent(artist -> {
                         throw new IllegalStateException("Only @TestArtist or @TestArtists annotation is allowed per test method!");
                     });
-                    
+
                     if (artistsAnno.count() <= 0) {
                         return;
                     }
@@ -57,10 +41,10 @@ public class ArtistsExtension implements BeforeEachCallback, ParameterResolver {
                         ArtistJson artistJson = createArtistJson();
                         listArtists.add(artistClient.createArtist(artistJson));
                     }
-                    setArtists(listArtists);
+                    context.getStore(NAMESPACE).put(context.getUniqueId(), listArtists);
                 });
     }
-    
+
     private ArtistJson createArtistJson() {
         final ArtistJson artist;
         artist = new ArtistJson(
@@ -80,8 +64,9 @@ public class ArtistsExtension implements BeforeEachCallback, ParameterResolver {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<ArtistJson> resolveParameter(ParameterContext parameterContext,
                                              ExtensionContext extensionContext) throws ParameterResolutionException {
-        return createdArtists();
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), List.class);
     }
 }

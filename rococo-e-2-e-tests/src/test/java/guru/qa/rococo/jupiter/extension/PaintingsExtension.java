@@ -17,7 +17,6 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,21 +32,6 @@ public class PaintingsExtension implements BeforeEachCallback, ParameterResolver
     private final MuseumGrpcClient museumClient = new MuseumGrpcClient();
     private final ArtistGrpcClient artistClient = new ArtistGrpcClient();
 
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static List<PaintingJson> createdPaintings() {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        return context.getStore(NAMESPACE).get(context.getUniqueId(), List.class);
-    }
-
-    public static void setPaintings(List<PaintingJson> paintings) {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        context.getStore(NAMESPACE).put(
-                context.getUniqueId(),
-                paintings
-        );
-    }
-
     @Override
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestPaintings.class)
@@ -55,7 +39,7 @@ public class PaintingsExtension implements BeforeEachCallback, ParameterResolver
                     AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestPainting.class).ifPresent(painting -> {
                         throw new IllegalStateException("Only @TestPainting or @TestPaintings annotation is allowed per test method!");
                     });
-                    
+
                     if (paintingAnno.count() <= 0) {
                         return;
                     }
@@ -64,10 +48,10 @@ public class PaintingsExtension implements BeforeEachCallback, ParameterResolver
                         PaintingJson paintingJson = createPaintingJson();
                         listPaintings.add(paintingClient.createPainting(paintingJson));
                     }
-                    setPaintings(listPaintings);
+                    context.getStore(NAMESPACE).put(context.getUniqueId(), listPaintings);
                 });
     }
-    
+
     private PaintingJson createPaintingJson() {
         return new PaintingJson(
                 null,
@@ -87,9 +71,10 @@ public class PaintingsExtension implements BeforeEachCallback, ParameterResolver
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<PaintingJson> resolveParameter(ParameterContext parameterContext,
                                                ExtensionContext extensionContext) throws ParameterResolutionException {
-        return createdPaintings();
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), List.class);
     }
 
     @Nonnull

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static guru.qa.rococo.utils.ResourceUtils.getDataImageBase64FromResource;
@@ -31,23 +30,6 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
     private final PaintingGrpcClient paintingClient = new PaintingGrpcClient();
     private final MuseumGrpcClient museumClient = new MuseumGrpcClient();
     private final ArtistGrpcClient artistClient = new ArtistGrpcClient();
-
-    @Nullable
-    public static PaintingJson createdPainting() {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        return context.getStore(NAMESPACE).get(
-                context.getUniqueId(),
-                PaintingJson.class
-        );
-    }
-
-    public static void setPainting(PaintingJson painting) {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        context.getStore(NAMESPACE).put(
-                context.getUniqueId(),
-                painting
-        );
-    }
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -64,7 +46,7 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
                             createArtist(paintingAnno.artist())
                     );
                     PaintingJson createdPainting = paintingClient.createPainting(painting);
-                    setPainting(createdPainting);
+                    context.getStore(NAMESPACE).put(context.getUniqueId(), createdPainting);
                 });
     }
 
@@ -77,7 +59,7 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
     @Override
     public PaintingJson resolveParameter(ParameterContext parameterContext,
                                          ExtensionContext extensionContext) throws ParameterResolutionException {
-        return createdPainting();
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), PaintingJson.class);
     }
 
     @Nonnull
