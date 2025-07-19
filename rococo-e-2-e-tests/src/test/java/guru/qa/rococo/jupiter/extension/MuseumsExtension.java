@@ -13,7 +13,6 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,21 +26,6 @@ public class MuseumsExtension implements BeforeEachCallback, ParameterResolver {
 
     private final MuseumGrpcClient museumClient = new MuseumGrpcClient();
 
-    @Nullable
-    @SuppressWarnings("unchecked")
-    public static List<MuseumJson> createdMuseums() {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        return context.getStore(NAMESPACE).get(context.getUniqueId(), List.class);
-    }
-
-    public static void setMuseums(List<MuseumJson> museum) {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        context.getStore(NAMESPACE).put(
-                context.getUniqueId(),
-                museum
-        );
-    }
-
     @Override
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestMuseums.class)
@@ -49,7 +33,7 @@ public class MuseumsExtension implements BeforeEachCallback, ParameterResolver {
                     AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestMuseum.class).ifPresent(museum -> {
                         throw new IllegalStateException("Only @Museum or @Museums annotation is allowed per test method!");
                     });
-                    
+
                     if (museumAnno.count() <= 0) {
                         return;
                     }
@@ -58,10 +42,10 @@ public class MuseumsExtension implements BeforeEachCallback, ParameterResolver {
                         MuseumJson museumJson = createMuseumJson();
                         listMuseums.add(museumClient.createMuseum(museumJson));
                     }
-                    setMuseums(listMuseums);
+                    context.getStore(NAMESPACE).put(context.getUniqueId(), listMuseums);
                 });
     }
-    
+
     private MuseumJson createMuseumJson() {
         final MuseumJson museum;
         CountryJson country = museumClient.getRandomCountry();
@@ -86,8 +70,9 @@ public class MuseumsExtension implements BeforeEachCallback, ParameterResolver {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<MuseumJson> resolveParameter(ParameterContext parameterContext,
                                              ExtensionContext extensionContext) throws ParameterResolutionException {
-        return createdMuseums();
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), List.class);
     }
 }

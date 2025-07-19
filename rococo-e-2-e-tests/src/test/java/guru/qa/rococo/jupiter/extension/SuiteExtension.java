@@ -13,12 +13,7 @@ public interface SuiteExtension extends BeforeAllCallback {
             this.getClass(),
             key -> {
               beforeSuite(rootContext);
-              return new ExtensionContext.Store.CloseableResource() {
-                @Override
-                public void close() throws Throwable {
-                  afterSuite();
-                }
-              };
+              return (ExtensionContext.Store.CloseableResource) this::afterSuite;
             }
         );
   }

@@ -45,4 +45,11 @@ public interface Config {
         return 9090;
     }
 
+    @Nonnull
+    String paintingGrpcAddress();
+
+    default int paintingGrpcPort() {
+        return 9093;
+    }
+
 }

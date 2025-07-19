@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.support.AnnotationSupport;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static guru.qa.rococo.utils.ResourceUtils.getDataImageBase64FromResource;
@@ -23,36 +22,18 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
 
     private final ArtistGrpcClient artistClient = new ArtistGrpcClient();
 
-    @Nullable
-    public static ArtistJson createdArtist() {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        return context.getStore(NAMESPACE).get(
-                context.getUniqueId(),
-                ArtistJson.class
-        );
-    }
-
-    public static void setArtist(ArtistJson artist) {
-        final ExtensionContext context = TestMethodContextExtension.context();
-        context.getStore(NAMESPACE).put(
-                context.getUniqueId(),
-                artist
-        );
-    }
-
     @Override
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestArtist.class)
                 .ifPresent(artistAnno -> {
-                    final ArtistJson artist;
-                    artist = new ArtistJson(
+                    final ArtistJson artist = new ArtistJson(
                             null,
                             "".equals(artistAnno.name()) ? RandomDataUtils.randomArtistName() : artistAnno.name(),
                             artistAnno.biography(),
                             getDataImageBase64FromResource(artistAnno.photo())
                     );
                     ArtistJson createdArtist = artistClient.createArtist(artist);
-                    setArtist(createdArtist);
+                    context.getStore(NAMESPACE).put(context.getUniqueId(), createdArtist);
                 });
     }
 
@@ -65,6 +46,6 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
     @Override
     public ArtistJson resolveParameter(ParameterContext parameterContext,
                                        ExtensionContext extensionContext) throws ParameterResolutionException {
-        return createdArtist();
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), ArtistJson.class);
     }
 }
