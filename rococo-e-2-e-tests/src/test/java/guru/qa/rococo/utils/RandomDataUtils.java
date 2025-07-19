@@ -37,4 +37,9 @@ public class RandomDataUtils {
     public static String randomArtistBiography() {
         return faker.lorem().sentence(20);
     }
+
+    @Nonnull
+    public static String randomPaintingName() {
+        return  faker.funnyName().name();
+    }
 }

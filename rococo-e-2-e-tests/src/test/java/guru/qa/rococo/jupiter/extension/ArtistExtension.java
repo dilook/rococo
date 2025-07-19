@@ -44,8 +44,7 @@ public class ArtistExtension implements BeforeEachCallback, ParameterResolver {
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestArtist.class)
                 .ifPresent(artistAnno -> {
-                    final ArtistJson artist;
-                    artist = new ArtistJson(
+                    final ArtistJson artist = new ArtistJson(
                             null,
                             "".equals(artistAnno.name()) ? RandomDataUtils.randomArtistName() : artistAnno.name(),
                             artistAnno.biography(),

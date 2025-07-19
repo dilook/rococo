@@ -44,8 +44,7 @@ public class MuseumExtension implements BeforeEachCallback, ParameterResolver {
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestMuseum.class)
                 .ifPresent(museumAnno -> {
-                    final MuseumJson museum;
-                    museum = new MuseumJson(
+                    final MuseumJson museum = new MuseumJson(
                             null,
                             "".equals(museumAnno.title()) ? RandomDataUtils.randomMuseumName() : museumAnno.title(),
                             museumAnno.description(),

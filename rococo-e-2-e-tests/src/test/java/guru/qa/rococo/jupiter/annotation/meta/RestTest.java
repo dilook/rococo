@@ -4,6 +4,8 @@ import guru.qa.rococo.jupiter.extension.ArtistExtension;
 import guru.qa.rococo.jupiter.extension.ArtistsExtension;
 import guru.qa.rococo.jupiter.extension.MuseumExtension;
 import guru.qa.rococo.jupiter.extension.MuseumsExtension;
+import guru.qa.rococo.jupiter.extension.PaintingExtension;
+import guru.qa.rococo.jupiter.extension.PaintingsExtension;
 import guru.qa.rococo.jupiter.extension.UserExtension;
 import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +23,9 @@ import java.lang.annotation.Target;
         MuseumsExtension.class,
         AllureJunit5.class,
         ArtistExtension.class,
-        ArtistsExtension.class
+        ArtistsExtension.class,
+        PaintingsExtension.class,
+        PaintingExtension.class
 })
 public @interface RestTest {
 }
