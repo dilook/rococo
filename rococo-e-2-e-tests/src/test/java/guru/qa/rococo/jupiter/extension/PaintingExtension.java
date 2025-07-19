@@ -35,14 +35,12 @@ public class PaintingExtension implements BeforeEachCallback, ParameterResolver 
     public void beforeEach(ExtensionContext context) {
         AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), TestPainting.class)
                 .ifPresent(paintingAnno -> {
-                    final PaintingJson painting;
-                    MuseumJson museum = createMuseum(paintingAnno.museum());
-                    painting = new PaintingJson(
+                    final PaintingJson painting = new PaintingJson(
                             null,
                             "".equals(paintingAnno.title()) ? RandomDataUtils.randomPaintingName() : paintingAnno.title(),
                             paintingAnno.description(),
                             getDataImageBase64FromResource(paintingAnno.content()),
-                            museum,
+                            createMuseum(paintingAnno.museum()),
                             createArtist(paintingAnno.artist())
                     );
                     PaintingJson createdPainting = paintingClient.createPainting(painting);

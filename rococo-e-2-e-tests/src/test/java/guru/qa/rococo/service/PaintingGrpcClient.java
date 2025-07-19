@@ -40,11 +40,20 @@ public class PaintingGrpcClient {
             = RococoPaintingServiceGrpc.newBlockingStub(channel);
 
     public List<PaintingJson> getAllPaintings(int page, int size, String title) {
-        GetAllPaintingsRequest request = GetAllPaintingsRequest.newBuilder()
+        return getAllPaintings(page, size, title, null);
+    }
+
+    public List<PaintingJson> getAllPaintings(int page, int size, String title, List<String> sort) {
+        GetAllPaintingsRequest.Builder requestBuilder = GetAllPaintingsRequest.newBuilder()
                 .setPage(page)
                 .setSize(size)
-                .setTitle(title != null ? title : "")
-                .build();
+                .setTitle(title != null ? title : "");
+
+        if (sort != null && !sort.isEmpty()) {
+            requestBuilder.addAllSort(sort);
+        }
+
+        GetAllPaintingsRequest request = requestBuilder.build();
 
         return paintingServiceStub.getAllPaintings(request)
                 .getPaintingsList().stream()
@@ -62,11 +71,20 @@ public class PaintingGrpcClient {
     }
 
     public List<PaintingJson> getPaintingsByArtistId(UUID artistId, int page, int size) {
-        GetPaintingsByArtistIdRequest request = GetPaintingsByArtistIdRequest.newBuilder()
+        return getPaintingsByArtistId(artistId, page, size, null);
+    }
+
+    public List<PaintingJson> getPaintingsByArtistId(UUID artistId, int page, int size, List<String> sort) {
+        GetPaintingsByArtistIdRequest.Builder requestBuilder = GetPaintingsByArtistIdRequest.newBuilder()
                 .setArtistId(artistId.toString())
                 .setPage(page)
-                .setSize(size)
-                .build();
+                .setSize(size);
+
+        if (sort != null && !sort.isEmpty()) {
+            requestBuilder.addAllSort(sort);
+        }
+
+        GetPaintingsByArtistIdRequest request = requestBuilder.build();
 
         return paintingServiceStub.getPaintingsByArtistId(request)
                 .getPaintingsList().stream()
@@ -112,8 +130,17 @@ public class PaintingGrpcClient {
     }
 
     private PaintingJson convertFromGrpcPainting(Painting painting) {
-        ArtistJson artist = artistGrpcClient.getArtistById(UUID.fromString(painting.getArtistId()));
-        MuseumJson museum = museumGrpcClient.getMuseumById(UUID.fromString(painting.getMuseumId()));
+        ArtistJson artist = null;
+        painting.getArtistId();
+        if (!painting.getArtistId().isEmpty()) {
+            artist = artistGrpcClient.getArtistById(UUID.fromString(painting.getArtistId()));
+        }
+
+        MuseumJson museum = null;
+        painting.getMuseumId();
+        if (!painting.getMuseumId().isEmpty()) {
+            museum = museumGrpcClient.getMuseumById(UUID.fromString(painting.getMuseumId()));
+        }
 
         return new PaintingJson(
                 UUID.fromString(painting.getId()),
