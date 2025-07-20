@@ -47,5 +47,8 @@ else
   echo "### All images exist except $E2E_IMAGE. No build needed ###"
 fi
 
+echo "### Pull chrome images for Selenoid ###"
+docker pull erolatex/selenoid_chromium:137.0
+
 docker compose up -d
 docker ps -a
