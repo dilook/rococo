@@ -199,8 +199,6 @@ services:
       - HEAD_COMMIT_MESSAGE=${HEAD_COMMIT_MESSAGE}
       - EXECUTION_TYPE=${EXECUTION_TYPE}
       - BROWSER=${BROWSER:-chrome}
-    volumes:
-      - allure-results:/rococo/rococo-e-2-e-tests/build/allure-results
     depends_on:
       frontend.rococo.dc:
         condition: service_started
@@ -218,8 +216,6 @@ services:
       - KEEP_HISTORY=1
     ports:
       - 5050:5050
-    volumes:
-      - allure-results:/app/allure-results
     networks:
       - rococo-network
 

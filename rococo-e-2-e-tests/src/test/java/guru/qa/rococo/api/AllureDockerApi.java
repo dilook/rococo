@@ -24,6 +24,8 @@ public interface AllureDockerApi {
     Call<AllureResponse> sendResults(@Query("project_id") @Nullable String projectId,
                                      @Query("force_project_creation") @Nullable Boolean forceProjectCreation,
                                      @Body AllureResults results);
+    @GET("clean-results")
+    Call<AllureResponse> cleanResults(@Query("project_id") String projectId);
 
     @GET("generate-report")
     Call<AllureResponse> generateReport(@Query("project_id") @Nullable String projectId,
