@@ -18,7 +18,7 @@ public class AllureApiClient extends RestClient {
     private final AllureDockerApi allureDockerApi;
 
     public AllureApiClient() {
-        super(CFG.allureDockerServiceUrl(), HttpLoggingInterceptor.Level.BASIC);
+        super(CFG.allureDockerServiceUrl(), HttpLoggingInterceptor.Level.NONE);
         allureDockerApi = create(AllureDockerApi.class);
     }
 

@@ -30,7 +30,8 @@ public class BrowserExtension implements
     if ("docker".equals(System.getProperty("test.env"))) {
       Configuration.remote = "http://selenoid:4444/wd/hub";
       if("chrome".equals(Configuration.browser)) {
-        Configuration.browserCapabilities = new ChromeOptions().addArguments("--no-sandbox");
+        Configuration.browserCapabilities = new ChromeOptions()
+                .addArguments("--no-sandbox", "--lang=ru", "accept-languages=ru-RU,ru");
       }
     }
   }
