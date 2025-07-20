@@ -188,6 +188,10 @@ services:
     build:
       context: ./
       dockerfile: ./rococo-e-2-e-tests/Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 2g
     environment:
       - ALLURE_DOCKER_API=${ALLURE_DOCKER_API}
       - GITHUB_TOKEN=${GITHUB_TOKEN}
