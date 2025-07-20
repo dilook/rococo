@@ -4,6 +4,7 @@ import guru.qa.rococo.model.allure.AllureResult;
 import guru.qa.rococo.model.allure.AllureResults;
 import guru.qa.rococo.service.impl.AllureApiClient;
 import lombok.extern.java.Log;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,13 +16,18 @@ import java.util.List;
 public class AllureSenderResultExtension implements SuiteExtension {
 
     private static final boolean isDocker = "docker".equals(System.getProperty("test.env"));
-    private static final String EXECUTOR = System.getenv("HEAD_COMMIT_MESSAGE");
     private static final String PROJECT_ID = "dusoltsev";
-    private static final String EXECUTION_TYPE = System.getenv("EXECUTION_TYPE");
-    private static final String BUILD_URL = System.getenv("BUILD_URL");
     private static final String ALLURE_RESULTS_PATH = "./rococo-e-2-e-tests/build/allure-results";
 
-    private final AllureApiClient allureApiClient = new AllureApiClient(System.getenv("ALLURE_DOCKER_API"));
+    private static final AllureApiClient allureApiClient = new AllureApiClient();
+
+    @Override
+    public void beforeSuite(ExtensionContext context) {
+        if (isDocker) {
+            allureApiClient.createProjectIfNotExist(PROJECT_ID);
+            allureApiClient.cleanResults(PROJECT_ID);
+        }
+    }
 
     @Override
     public void afterSuite() {
@@ -30,10 +36,9 @@ public class AllureSenderResultExtension implements SuiteExtension {
         }
 
         log.info("Start sending allure results to Allure server...");
-
-        allureApiClient.getOrCreateProject(PROJECT_ID);
+        allureApiClient.cleanResults(PROJECT_ID);
         allureApiClient.sendResults(PROJECT_ID, getResults());
-        allureApiClient.generateReport(PROJECT_ID, EXECUTOR, BUILD_URL, EXECUTION_TYPE);
+        allureApiClient.generateReport(PROJECT_ID);
 
         log.info("Allure results sent successfully!");
     }

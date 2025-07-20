@@ -1,5 +1,7 @@
 package guru.qa.rococo.config;
 
+import jakarta.persistence.NamedAttributeNode;
+
 import javax.annotation.Nonnull;
 
 public interface Config {
@@ -52,5 +54,7 @@ public interface Config {
     default int paintingGrpcPort() {
         return 9093;
     }
+
+    String allureDockerServiceUrl();
 
 }

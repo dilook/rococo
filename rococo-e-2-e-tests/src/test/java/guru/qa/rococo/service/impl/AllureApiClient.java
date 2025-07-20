@@ -17,24 +17,24 @@ public class AllureApiClient extends RestClient {
 
     private final AllureDockerApi allureDockerApi;
 
-
-    public AllureApiClient(String baseUrl) {
-        super(baseUrl, HttpLoggingInterceptor.Level.BASIC);
+    public AllureApiClient() {
+        super(CFG.allureDockerServiceUrl(), HttpLoggingInterceptor.Level.NONE);
         allureDockerApi = create(AllureDockerApi.class);
     }
 
-    public void getOrCreateProject(@Nonnull String name) {
+    public void createProjectIfNotExist(@Nonnull String name) {
         Response<AllureResponse> response;
         try {
             response = allureDockerApi.getProject(name).execute();
             if (response.code() == 404) {
                 response = allureDockerApi.createProject(new AllureProject(name)).execute();
+                assertEquals(201, response.code());
+            } else {
+                assertEquals(200, response.code());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        assertEquals(201, response.code());
     }
 
     public void sendResults(String projectId, @Nonnull AllureResults results) {
@@ -47,13 +47,25 @@ public class AllureApiClient extends RestClient {
         assertEquals(200, response.code());
     }
 
-    public void generateReport(@Nonnull String projectId,
-                               @Nonnull String executionName,
-                               String executionFrom,
-                               String executionType) {
+    public void cleanResults(@Nonnull String projectId) {
         Response<AllureResponse> response;
         try {
-            response = allureDockerApi.generateReport(projectId, executionName, executionFrom, executionType).execute();
+            response = allureDockerApi.cleanResults(projectId).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(200, response.code());
+    }
+
+    public void generateReport(@Nonnull String projectId) {
+        Response<AllureResponse> response;
+        try {
+            response = allureDockerApi.generateReport(
+                    projectId,
+                    System.getenv("HEAD_COMMIT_MESSAGE"),
+                    System.getenv("BUILD_URL"),
+                    System.getenv("EXECUTION_TYPE")
+            ).execute();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
