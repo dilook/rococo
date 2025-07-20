@@ -17,6 +17,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.ByteArrayInputStream;
+import java.util.Map;
 
 @ParametersAreNonnullByDefault
 public class BrowserExtension implements
@@ -31,7 +32,8 @@ public class BrowserExtension implements
       Configuration.remote = "http://selenoid:4444/wd/hub";
       if("chrome".equals(Configuration.browser)) {
         Configuration.browserCapabilities = new ChromeOptions()
-                .addArguments("--no-sandbox", "--lang=ru", "accept-languages=ru-RU,ru");
+                .addArguments("--no-sandbox")
+                .setExperimentalOption("prefs", Map.of("intl.accept_languages", "ru-RU,ru"));
       }
     }
   }
