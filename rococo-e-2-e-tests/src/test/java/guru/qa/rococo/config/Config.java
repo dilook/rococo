@@ -1,7 +1,5 @@
 package guru.qa.rococo.config;
 
-import jakarta.persistence.NamedAttributeNode;
-
 import javax.annotation.Nonnull;
 
 public interface Config {
@@ -56,5 +54,10 @@ public interface Config {
     }
 
     String allureDockerServiceUrl();
+
+    @Nonnull
+    default String ghUrl() {
+        return "https://api.github.com/";
+    }
 
 }

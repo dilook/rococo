@@ -2,6 +2,7 @@ package guru.qa.rococo.test.web;
 
 import com.codeborne.selenide.Selenide;
 import guru.qa.rococo.jupiter.annotation.ApiLogin;
+import guru.qa.rococo.jupiter.annotation.DisabledByIssue;
 import guru.qa.rococo.jupiter.annotation.TestArtist;
 import guru.qa.rococo.jupiter.annotation.TestMuseum;
 import guru.qa.rococo.jupiter.annotation.TestPainting;
@@ -69,6 +70,7 @@ public class PaintingWebTest {
     @ApiLogin
     @User
     @TestPainting
+    @DisabledByIssue("16")
     void shouldUpdatePaintingByAuthorizedUser(PaintingJson painting) {
         String newDescription = RandomDataUtils.randomSentence(50);
         Selenide.open(PaintingPage.URL, PaintingPage.class)
