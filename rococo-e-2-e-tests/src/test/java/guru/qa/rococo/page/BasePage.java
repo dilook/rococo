@@ -20,7 +20,7 @@ public abstract class BasePage<T extends BasePage<?>> {
 
     public abstract T checkThatPageLoaded();
 
-    @Step("Check that form error message appears: {expectedText}")
+    @Step("Проверить, что появилось сообщение об ошибке формы: {expectedText}")
     @SuppressWarnings("unchecked")
     @Nonnull
     public T checkErrorsMessage(String... expectedText) {
@@ -28,7 +28,7 @@ public abstract class BasePage<T extends BasePage<?>> {
         return (T) this;
     }
 
-    @Step("Check that alert message appears: {expectedText}")
+    @Step("Проверить, что появилось предупреждающее сообщение: {expectedText}")
     @SuppressWarnings("unchecked")
     @Nonnull
     public T checkAlertMessage(String expectedText) {

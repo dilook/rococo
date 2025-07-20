@@ -55,3 +55,13 @@ spring:
     url: 'jdbc:postgresql://localhost:5432/rococo-painting'
     username: postgres
     password: secret
+
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  datasource:
+    url: 'jdbc:postgresql://rococo-all-db:5432/rococo-painting'
+    username: postgres
+    password: secret

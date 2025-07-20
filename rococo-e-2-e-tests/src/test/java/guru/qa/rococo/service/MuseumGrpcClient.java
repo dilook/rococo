@@ -17,6 +17,7 @@ import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.utils.GrpcConsoleInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import io.qameta.allure.Step;
 import io.qameta.allure.grpc.AllureGrpc;
 
 import javax.annotation.Nonnull;
@@ -44,6 +45,7 @@ public class MuseumGrpcClient {
             = RococoCountryServiceGrpc.newBlockingStub(channel);
 
 
+    @Step("Получить все страны через gRPC")
     public List<CountryJson> getAllCountries() {
         return countryBlockingStub.getAllCountries(GetAllCountriesRequest.newBuilder().setPage(0).setSize(200).build())
                 .getCountriesList().stream()
@@ -53,15 +55,18 @@ public class MuseumGrpcClient {
                 )).toList();
     }
 
+    @Step("Получить страну по названию '{name}' через gRPC")
     public CountryJson getCountryByName(String name) {
         Country country = countryBlockingStub.getCountry(GetCountryRequest.newBuilder().setName(name).build());
         return new CountryJson(UUID.fromString(country.getId()), country.getName());
     }
 
+    @Step("Получить случайную страну через gRPC")
     public CountryJson getRandomCountry() {
         return getAllCountries().stream().findAny().get();
     }
 
+    @Step("Получить все музеи со страницы {page}, размер {size}, заголовок '{title}' через gRPC")
     public List<MuseumJson> getAllMuseums(int page, int size, String title) {
         GetAllMuseumsRequest request = GetAllMuseumsRequest.newBuilder()
                 .setPage(page)
@@ -75,6 +80,7 @@ public class MuseumGrpcClient {
                 .toList();
     }
 
+    @Step("Получить музей по ID '{id}' через gRPC")
     public MuseumJson getMuseumById(UUID id) {
         GetMuseumByIdRequest request = GetMuseumByIdRequest.newBuilder()
                 .setId(id.toString())
@@ -84,6 +90,7 @@ public class MuseumGrpcClient {
         return convertFromGrpcMuseum(museum);
     }
 
+    @Step("Создать музей через gRPC")
     public MuseumJson createMuseum(@Nonnull MuseumJson museumJson) {
         CreateMuseumRequest request = CreateMuseumRequest.newBuilder()
                 .setTitle(museumJson.title())
@@ -101,6 +108,7 @@ public class MuseumGrpcClient {
         return convertFromGrpcMuseum(museum);
     }
 
+    @Step("Обновить музей через gRPC")
     public MuseumJson updateMuseum(MuseumJson museumJson) {
         UpdateMuseumRequest request = UpdateMuseumRequest.newBuilder()
                 .setId(museumJson.id().toString())

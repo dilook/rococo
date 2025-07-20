@@ -17,9 +17,8 @@ public class RegistrationWebTest {
         String username = RandomDataUtils.randomUsername();
         Selenide.open(RegisterPage.URL, RegisterPage.class)
                 .register(username, "12345", "12345")
-                .checkSuccessMessage();
-
-        Selenide.open(MainPage.URL, MainPage.class)
+                .checkSuccessMessage()
+                .login()
                 .clickLogin()
                 .successLogin(username, "12345")
                 .profileAvatarShouldBeVisible();

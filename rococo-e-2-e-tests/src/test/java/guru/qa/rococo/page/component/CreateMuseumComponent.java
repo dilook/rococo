@@ -1,6 +1,7 @@
 package guru.qa.rococo.page.component;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
@@ -19,11 +20,13 @@ public class CreateMuseumComponent extends BaseComponent<CreateMuseumComponent> 
     private final SelenideElement closeBtn = self.$("button[type='button']");
 
 
+    @Step("Установить название музея: '{title}'")
     public CreateMuseumComponent setTitle(String title) {
         this.title.setValue(title);
         return this;
     }
 
+    @Step("Выбрать страну: '{country}'")
     public CreateMuseumComponent setCountry(String country) {
         while (!this.country.getOptions().find(text(country)).exists() && this.country.getOptions().size() < 194) {
             this.country.getOptions().last().scrollIntoView(true);
@@ -32,30 +35,36 @@ public class CreateMuseumComponent extends BaseComponent<CreateMuseumComponent> 
         return this;
     }
 
+    @Step("Установить город: '{city}'")
     public CreateMuseumComponent setCity(String city) {
         this.city.setValue(city);
         return this;
     }
 
+    @Step("Загрузить фото музея")
     public CreateMuseumComponent setPhoto(String photo) {
         this.photo.uploadFromClasspath(photo);
         return this;
     }
 
+    @Step("Установить описание музея: '{description}'")
     public CreateMuseumComponent setDescription(String description) {
         this.description.setValue(description);
         return this;
     }
 
+    @Step("Отправить форму создания музея")
     public CreateMuseumComponent submitForm() {
         addBtn.click();
         return this;
     }
 
+    @Step("Закрыть форму создания музея")
     public void closeForm() {
         closeBtn.click();
     }
 
+    @Step("Заполнить и отправить форму создания музея")
     public void fillForm(String title, String country, String city, String photo, String description) {
         setTitle(title);
         setCountry(country);

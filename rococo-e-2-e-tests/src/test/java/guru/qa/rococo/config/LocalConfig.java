@@ -29,25 +29,19 @@ enum LocalConfig implements Config {
     @Nonnull
     @Override
     public String gatewayUrl() {
-        return "http://127.0.0.1:8080/";
+        return "http://127.0.0.1:8000/";
     }
 
     @Nonnull
     @Override
-    public String userdataUrl() {
-        return "http://127.0.0.1:8080/";
+    public String userdataGrpcAddress() {
+        return "127.0.0.1";
     }
 
     @Nonnull
     @Override
     public String userdataJdbcUrl() {
         return "jdbc:postgresql://127.0.0.1:5432/rococo-userdata";
-    }
-
-    @NotNull
-    @Override
-    public String museumJdbcUrl() {
-        return "jdbc:postgresql://127.0.0.1:5432/rococo-museum";
     }
 
     @NotNull

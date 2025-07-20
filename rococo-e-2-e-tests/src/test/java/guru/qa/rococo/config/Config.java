@@ -23,13 +23,14 @@ public interface Config {
     String gatewayUrl();
 
     @Nonnull
-    String userdataUrl();
-
-    @Nonnull
     String userdataJdbcUrl();
 
     @Nonnull
-    String museumJdbcUrl();
+    String userdataGrpcAddress();
+
+    default int userdataGrpcPort() {
+        return 9094;
+    }
 
     @Nonnull
     String museumGrpcAddress();

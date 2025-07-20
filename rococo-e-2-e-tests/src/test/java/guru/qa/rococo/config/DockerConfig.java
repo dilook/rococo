@@ -16,7 +16,7 @@ enum DockerConfig implements Config {
     @Nonnull
     @Override
     public String authUrl() {
-        return "http://auth.rococo.dc/";
+        return "http://auth.rococo.dc:9000/";
     }
 
     @Nonnull
@@ -28,25 +28,19 @@ enum DockerConfig implements Config {
     @Nonnull
     @Override
     public String gatewayUrl() {
-        return "http://gateway.rococo.dc:8080/";
+        return "http://gateway.rococo.dc:8000/";
     }
 
     @Nonnull
     @Override
-    public String userdataUrl() {
-        return "http://userdata.rococo.dc:8080/";
+    public String userdataGrpcAddress() {
+        return "userdata.rococo.dc";
     }
 
     @Nonnull
     @Override
     public String userdataJdbcUrl() {
-        return "jdbc:postgresql://rococo-all-db:5432/rococo-gateway";
-    }
-
-    @NotNull
-    @Override
-    public String museumJdbcUrl() {
-        return "jdbc:postgresql://rococo-all-db:5432/rococo-museum";
+        return "jdbc:postgresql://rococo-all-db:5432/rococo-userdata";
     }
 
     @NotNull

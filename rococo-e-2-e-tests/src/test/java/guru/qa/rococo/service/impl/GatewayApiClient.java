@@ -36,7 +36,7 @@ public class GatewayApiClient extends RestClient {
         this.paintingApi = create(PaintingApi.class);
     }
 
-    @Step("Get all museums with page '{0}', size '{1}', title '{2}' using REST API")
+    @Step("Получить все музеи со страницы '{0}', размер '{1}', заголовок '{2}' через REST API")
     @NotNull
     public RestResponsePage<MuseumJson> getAllMuseum(int page, int size, @Nullable String title) {
         try {
@@ -49,7 +49,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Get museum by id '{0}' using REST API")
+    @Step("Получить музей по ID '{0}' через REST API")
     @NotNull
     public MuseumJson getMuseumById(UUID id) {
         try {
@@ -62,7 +62,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Update museum using REST API")
+    @Step("Обновить музей через REST API")
     @NotNull
     public MuseumJson updateMuseum(String bearerToken, MuseumJson museumJson) {
         try {
@@ -74,7 +74,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Create museum using REST API")
+    @Step("Создать музей через REST API")
     @NotNull
     public MuseumJson createMuseum(String bearerToken, MuseumJson museumJson) {
         try {
@@ -86,7 +86,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Get random country using REST API")
+    @Step("Получить случайную страну через REST API")
     @NotNull
     public CountryJson getRandomCountry(String token) {
         try {
@@ -102,7 +102,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Get all artists with page '{0}', size '{1}', name '{2}' using REST API")
+    @Step("Получить всех художников со страницы '{0}', размер '{1}', имя '{2}' через REST API")
     @NotNull
     public RestResponsePage<ArtistJson> getAllArtist(int page, int size, @Nullable String name) {
         try {
@@ -115,7 +115,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Get artist by id '{0}' using REST API")
+    @Step("Получить художника по ID '{0}' через REST API")
     @NotNull
     public ArtistJson getArtistById(UUID id) {
         try {
@@ -128,7 +128,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Update artist using REST API")
+    @Step("Обновить художника через REST API")
     @NotNull
     public ArtistJson updateArtist(String bearerToken, ArtistJson artistJson) {
         try {
@@ -140,7 +140,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Create artist using REST API")
+    @Step("Создать художника через REST API")
     @NotNull
     public ArtistJson createArtist(String bearerToken, ArtistJson artistJson) {
         try {
@@ -152,7 +152,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Get all paintings with page '{0}', size '{1}', title '{2}' using REST API")
+    @Step("Получить все картины со страницы '{0}', размер '{1}', заголовок '{2}' через REST API")
     @NotNull
     public RestResponsePage<PaintingJson> getAllPainting(int page, int size, @Nullable String title) {
         try {
@@ -165,7 +165,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Get painting by id '{0}' using REST API")
+    @Step("Получить картину по ID '{0}' через REST API")
     @NotNull
     public PaintingJson getPaintingById(UUID id) {
         try {
@@ -178,7 +178,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Update painting using REST API")
+    @Step("Обновить картину через REST API")
     @NotNull
     public PaintingJson updatePainting(String bearerToken, PaintingJson paintingJson) {
         try {
@@ -190,7 +190,7 @@ public class GatewayApiClient extends RestClient {
         }
     }
 
-    @Step("Create painting using REST API")
+    @Step("Создать картину через REST API")
     @NotNull
     public PaintingJson createPainting(String bearerToken, PaintingJson paintingJson) {
         try {

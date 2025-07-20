@@ -10,6 +10,7 @@ import guru.qa.rococo.grpc.GetMuseumByIdRequest;
 import guru.qa.rococo.grpc.Museum;
 import guru.qa.rococo.grpc.UpdateMuseumRequest;
 import guru.qa.rococo.jupiter.annotation.TestMuseum;
+import guru.qa.rococo.jupiter.annotation.TestMuseums;
 import guru.qa.rococo.model.rest.MuseumJson;
 import guru.qa.rococo.utils.RandomDataUtils;
 import guru.qa.rococo.utils.ResourceUtils;
@@ -71,6 +72,7 @@ public class MuseumGrpcTest extends BaseGrpcTest {
     }
 
     @Test
+    @TestMuseums(count = 5)
     void shouldReturnLastPageOfMuseums() {
         final GetAllMuseumsResponse firstResponse = museumBlockingStub.getAllMuseums(GetAllMuseumsRequest.newBuilder()
                 .setPage(0)
