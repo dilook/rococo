@@ -24,6 +24,7 @@ public class AllureSenderResultExtension implements SuiteExtension {
     @Override
     public void beforeSuite(ExtensionContext context) {
         if (isDocker) {
+            log.info("Create project in Allure server if it doesn't exist yet");
             allureApiClient.createProjectIfNotExist(PROJECT_ID);
             allureApiClient.cleanResults(PROJECT_ID);
         }
@@ -31,16 +32,14 @@ public class AllureSenderResultExtension implements SuiteExtension {
 
     @Override
     public void afterSuite() {
-        if (!isDocker) {
-            return;
+        if (isDocker) {
+            log.info("Start sending allure results to Allure server...");
+            allureApiClient.cleanResults(PROJECT_ID);
+            allureApiClient.sendResults(PROJECT_ID, getResults());
+            allureApiClient.generateReport(PROJECT_ID);
+
+            log.info("Allure results sent successfully!");
         }
-
-        log.info("Start sending allure results to Allure server...");
-        allureApiClient.cleanResults(PROJECT_ID);
-        allureApiClient.sendResults(PROJECT_ID, getResults());
-        allureApiClient.generateReport(PROJECT_ID);
-
-        log.info("Allure results sent successfully!");
     }
 
 

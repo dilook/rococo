@@ -235,7 +235,3 @@ services:
 networks:
   rococo-network:
     driver: bridge
-
-volumes:
-  allure-results:
-    external: true
