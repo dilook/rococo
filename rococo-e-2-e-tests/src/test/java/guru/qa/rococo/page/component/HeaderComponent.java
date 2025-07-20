@@ -11,7 +11,7 @@ public class HeaderComponent extends BaseComponent<HeaderComponent>{
         super($("header#shell-header"));
     }
 
-    private final SelenideElement loginBtn = self.$("button");
+    private final SelenideElement loginBtn = self.$("button.btn");
     private final SelenideElement avatarBtn = self.$("[data-testid='avatar']");
 
 

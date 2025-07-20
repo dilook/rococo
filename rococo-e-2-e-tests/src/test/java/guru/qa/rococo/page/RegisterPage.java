@@ -30,6 +30,12 @@ public class RegisterPage extends BasePage<RegisterPage>{
         return this;
     }
 
+    @Step("Войти в систему")
+    public MainPage login() {
+        loginBtn.click();
+        return new MainPage();
+    }
+
     @Step("Проверить ошибку имени пользователя: '{errorText}'")
     public RegisterPage checkUsernameError(String errorText) {
         usernameError.shouldHave(text(errorText));

@@ -27,8 +27,8 @@ public class MuseumCardPage {
         return this;
     }
 
-    @Step("Проверить город '{expectedText}'")
-    public MuseumCardPage checkCity(String expectedText) {
+    @Step("Проверить страну и город '{expectedText}'")
+    public MuseumCardPage checkCountryCity(String expectedText) {
         countryCity.shouldHave(text(expectedText));
         return this;
     }

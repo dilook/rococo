@@ -18,7 +18,6 @@ public class MainPage extends BasePage<MainPage> {
     public static final String URL = Config.getInstance().frontUrl();
 
     private final SelenideElement profileBtn = $("svg.avatar-initials");
-    private final SelenideElement loginBtn = $(byText("Войти"));
     private final ElementsCollection navigationList = $$("main nav li");
     @Getter
     private final HeaderComponent header = new HeaderComponent();
@@ -32,7 +31,7 @@ public class MainPage extends BasePage<MainPage> {
 
     @Step("Нажать кнопку входа")
     public LoginPage clickLogin() {
-        loginBtn.click();
+        header.clickLogin();
         return new LoginPage();
     }
 

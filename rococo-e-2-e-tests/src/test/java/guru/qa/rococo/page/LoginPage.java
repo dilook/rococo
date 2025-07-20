@@ -12,7 +12,6 @@ public class LoginPage extends BasePage<LoginPage> {
     private final SelenideElement username = $("input[name='username']");
     private final SelenideElement password = $("input[name='password']");
     private final SelenideElement submitBtn = $("button[type='submit']");
-   ;
 
     @Step("Войти в систему с именем '{username}' и паролем '{password}'")
     public LoginPage login(String username, String password) {
