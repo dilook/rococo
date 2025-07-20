@@ -60,3 +60,21 @@ rococo-auth:
   base-uri: 'http://127.0.0.1:9000'
 oauth2:
   client-id: 'client'
+
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  kafka:
+    bootstrap-servers: 'kafka:9092'
+  datasource:
+    url: 'jdbc:postgresql://rococo-all-db:5432/rococo-auth'
+    username: postgres
+    password: secret
+rococo-front:
+  base-uri: 'http://frontend.rococo.dc'
+rococo-auth:
+  base-uri: 'http://auth.rococo.dc:9000'
+oauth2:
+  client-id: 'client'

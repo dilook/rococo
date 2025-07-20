@@ -18,7 +18,7 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration
-@Profile({"local"})
+@Profile({"local", "docker"})
 public class SecurityConfigLocal {
 
     private final CorsCustomizer corsCustomizer;

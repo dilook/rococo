@@ -1,17 +1,15 @@
 package guru.qa.rococo.service.impl;
 
 import guru.qa.rococo.api.AuthApi;
-import guru.qa.rococo.api.UserdataApi;
 import guru.qa.rococo.api.core.RestClient.EmtyRestClient;
 import guru.qa.rococo.api.core.ThreadSafeCookieStore;
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.model.TestData;
 import guru.qa.rococo.model.rest.UserJson;
+import guru.qa.rococo.service.UserGrpcClient;
 import guru.qa.rococo.service.UsersClient;
 import io.qameta.allure.Step;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Assertions;
-import retrofit2.Response;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
@@ -20,10 +18,9 @@ import java.io.IOException;
 public class UsersApiClient implements UsersClient {
 
     private static final Config CFG = Config.getInstance();
-    private static final String defaultPassword = "12345";
 
     private final AuthApi authApi = new EmtyRestClient(CFG.authUrl()).create(AuthApi.class);
-    private final UserdataApi userdataApi = new EmtyRestClient(CFG.userdataUrl()).create(UserdataApi.class);
+    private final UserGrpcClient userGrpcClient = new UserGrpcClient();
 
     @Override
     @Step("Create user with username '{0}' using REST API")
@@ -37,14 +34,9 @@ public class UsersApiClient implements UsersClient {
                     password,
                     ThreadSafeCookieStore.INSTANCE.cookieValue("XSRF-TOKEN")
             ).execute();
-            Response<UserJson> response = userdataApi.currentUser(username).execute();
-            Assertions.assertTrue(response.isSuccessful());
-            UserJson createdUser = response.body();
-            return createdUser.addTestData(
-                    new TestData(
-                            password
-                    )
-            );
+            UserJson createdUser = userGrpcClient.getUser(username);
+
+            return createdUser.addTestData(new TestData(password));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

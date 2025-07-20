@@ -7,6 +7,7 @@ import guru.qa.rococo.grpc.GetAllArtistsResponse;
 import guru.qa.rococo.grpc.GetArtistByIdRequest;
 import guru.qa.rococo.grpc.UpdateArtistRequest;
 import guru.qa.rococo.jupiter.annotation.TestArtist;
+import guru.qa.rococo.jupiter.annotation.TestArtists;
 import guru.qa.rococo.model.rest.ArtistJson;
 import guru.qa.rococo.utils.RandomDataUtils;
 import guru.qa.rococo.utils.ResourceUtils;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ArtistGrpcTest extends BaseGrpcTest {
 
     @Test
+    @TestArtists(count = 4)
     void shouldReturnedPageableArtists() {
         final GetAllArtistsResponse response = artistBlockingStub.getAllArtists(GetAllArtistsRequest.newBuilder()
                 .setPage(0)
@@ -68,6 +70,7 @@ public class ArtistGrpcTest extends BaseGrpcTest {
     }
 
     @Test
+    @TestArtists(count = 5)
     void shouldReturnLastPageOfArtists() {
         final GetAllArtistsResponse firstResponse = artistBlockingStub.getAllArtists(GetAllArtistsRequest.newBuilder()
                 .setPage(0)

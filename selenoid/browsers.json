@@ -1,0 +1,34 @@
+{
+  "chrome": {
+    "default": "137.0",
+    "versions": {
+      "137.0": {
+        "image": "erolatex/selenoid_chromium:137.0",
+        "port": "4444",
+        "env": [
+          "TZ=Europe/Moscow",
+          "LANG=ru_RU.UTF-8",
+          "LANGUAGE=ru:ru",
+          "LC_ALL=ru_RU.UTF-8"
+        ]
+      }
+    }
+  },
+  "firefox": {
+    "default": "125.0",
+    "versions": {
+      "125.0": {
+        "image": "selenoid/vnc_firefox:125.0",
+        "port": "4444",
+        "path": "/wd/hub",
+        "tmpfs": {"/tmp":"size=512m"},
+        "env": [
+          "TZ=Europe/Moscow",
+          "LANG=ru_RU.UTF-8",
+          "LANGUAGE=ru:ru",
+          "LC_ALL=ru_RU.UTF-8"
+        ]
+      }
+    }
+  }
+}
