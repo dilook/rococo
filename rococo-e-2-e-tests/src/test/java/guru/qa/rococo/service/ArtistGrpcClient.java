@@ -11,6 +11,7 @@ import guru.qa.rococo.model.rest.ArtistJson;
 import guru.qa.rococo.utils.GrpcConsoleInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import io.qameta.allure.Step;
 import io.qameta.allure.grpc.AllureGrpc;
 
 import javax.annotation.Nonnull;
@@ -33,6 +34,7 @@ public class ArtistGrpcClient {
     private final RococoArtistServiceGrpc.RococoArtistServiceBlockingStub artistServiceStub
             = RococoArtistServiceGrpc.newBlockingStub(channel);
 
+    @Step("Получить всех художников со страницы {page}, размер {size}, имя '{name}' через gRPC")
     public List<ArtistJson> getAllArtists(int page, int size, String name) {
         GetAllArtistsRequest request = GetAllArtistsRequest.newBuilder()
                 .setPage(page)
@@ -46,6 +48,7 @@ public class ArtistGrpcClient {
                 .toList();
     }
 
+    @Step("Получить художника по ID '{id}' через gRPC")
     public ArtistJson getArtistById(UUID id) {
         GetArtistByIdRequest request = GetArtistByIdRequest.newBuilder()
                 .setId(id.toString())
@@ -55,6 +58,7 @@ public class ArtistGrpcClient {
         return convertFromGrpcArtist(artist);
     }
 
+    @Step("Создать художника через gRPC")
     public ArtistJson createArtist(@Nonnull ArtistJson artistJson) {
         CreateArtistRequest request = CreateArtistRequest.newBuilder()
                 .setName(artistJson.name())
@@ -66,6 +70,7 @@ public class ArtistGrpcClient {
         return convertFromGrpcArtist(artist);
     }
 
+    @Step("Обновить художника через gRPC")
     public ArtistJson updateArtist(ArtistJson artistJson) {
         UpdateArtistRequest request = UpdateArtistRequest.newBuilder()
                 .setId(artistJson.id().toString())

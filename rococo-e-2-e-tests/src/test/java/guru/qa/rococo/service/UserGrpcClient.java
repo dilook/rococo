@@ -9,6 +9,7 @@ import guru.qa.rococo.model.rest.UserJson;
 import guru.qa.rococo.utils.GrpcConsoleInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import io.qameta.allure.Step;
 import io.qameta.allure.grpc.AllureGrpc;
 
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class UserGrpcClient {
 
     private final RococoUserServiceGrpc.RococoUserServiceBlockingStub userServiceStub = RococoUserServiceGrpc.newBlockingStub(channel);
 
+    @Step("Получить пользователя '{username}' через gRPC")
     public UserJson getUser(String username) {
         GetUserRequest request = GetUserRequest.newBuilder()
                 .setUsername(username)
@@ -36,6 +38,7 @@ public class UserGrpcClient {
         return convertFromGrpcUser(response);
     }
 
+    @Step("Обновить пользователя через gRPC")
     public UserJson updateUser(UserJson user) {
         UpdateUserRequest.Builder requestBuilder = UpdateUserRequest.newBuilder()
                 .setUsername(user.username())

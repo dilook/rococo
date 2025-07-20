@@ -23,7 +23,7 @@ public class UsersApiClient implements UsersClient {
     private final UserGrpcClient userGrpcClient = new UserGrpcClient();
 
     @Override
-    @Step("Create user with username '{0}' using REST API")
+    @Step("Создать пользователя с именем '{0}' через REST API")
     @NotNull
     public UserJson createUser(String username, String password) {
         try {

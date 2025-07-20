@@ -8,6 +8,7 @@ import guru.qa.rococo.jupiter.extension.PaintingExtension;
 import guru.qa.rococo.jupiter.extension.PaintingsExtension;
 import guru.qa.rococo.jupiter.extension.UserExtension;
 import io.qameta.allure.junit5.AllureJunit5;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.ElementType;
@@ -27,5 +28,6 @@ import java.lang.annotation.Target;
         PaintingsExtension.class,
         PaintingExtension.class
 })
+@Tag("rest")
 public @interface RestTest {
 }

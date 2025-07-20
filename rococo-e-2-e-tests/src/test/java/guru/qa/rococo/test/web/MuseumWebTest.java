@@ -77,7 +77,7 @@ public class MuseumWebTest {
                 .editMuseum()
                 .setCity(randomCityName)
                 .submitForm();
-        new MuseumCardPage().checkCountryCity(randomCityName);
+        new MuseumCardPage().checkCity(randomCityName);
     }
 
     @Test

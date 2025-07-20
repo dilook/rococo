@@ -8,6 +8,7 @@ import guru.qa.rococo.api.core.ThreadSafeCookieStore;
 import guru.qa.rococo.config.Config;
 import guru.qa.rococo.jupiter.extension.ApiLoginExtension;
 import guru.qa.rococo.utils.OAuthUtils;
+import io.qameta.allure.Step;
 import lombok.SneakyThrows;
 import retrofit2.Response;
 
@@ -22,6 +23,7 @@ public class AuthApiClient extends RestClient {
         this.authApi = create(AuthApi.class);
     }
 
+    @Step("Войти в систему с именем '{username}' и паролем '{password}' через API")
     @SneakyThrows
     public String login(String username, String password) {
         final String codeVerifier = OAuthUtils.generateCodeVerifier();

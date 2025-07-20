@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 public class UsersDbClient implements UsersClient {
 
     private static final Config CFG = Config.getInstance();
-    private static final String defaultPassword = "12345";
     private static final PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     private final AuthUserRepository authUserRepository = new AuthUserRepository();
@@ -37,7 +36,7 @@ public class UsersDbClient implements UsersClient {
     );
 
     @Override
-    @Step("Create user with username '{0}' using SQL INSERT")
+    @Step("Создать пользователя с именем '{0}' через SQL INSERT")
     @Nonnull
     public UserJson createUser(String username, String password) {
         return requireNonNull(

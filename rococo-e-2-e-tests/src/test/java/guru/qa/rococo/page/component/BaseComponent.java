@@ -28,7 +28,7 @@ public abstract class BaseComponent<T extends BaseComponent<?>> {
   }
 
 
-  @Step("Check that alert message appears: {expectedText}")
+  @Step("Проверить, что появилось предупреждающее сообщение: {expectedText}")
   @SuppressWarnings("unchecked")
   @Nonnull
   public T checkAlertMessage(String expectedText) {

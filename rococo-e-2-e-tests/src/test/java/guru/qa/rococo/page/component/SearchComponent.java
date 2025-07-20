@@ -1,6 +1,7 @@
 package guru.qa.rococo.page.component;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -18,6 +19,7 @@ public class SearchComponent extends BaseComponent<SearchComponent> {
     private final SelenideElement searchBtn = self.$("button");
 
 
+    @Step("Выполнить поиск по тексту '{text}'")
     public SearchComponent search(String text) {
         input.val(text).pressEnter();
         return this;

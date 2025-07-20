@@ -14,6 +14,7 @@ import guru.qa.rococo.model.rest.PaintingJson;
 import guru.qa.rococo.utils.GrpcConsoleInterceptor;
 import io.grpc.Channel;
 import io.grpc.ManagedChannelBuilder;
+import io.qameta.allure.Step;
 import io.qameta.allure.grpc.AllureGrpc;
 
 import javax.annotation.Nonnull;
@@ -39,10 +40,12 @@ public class PaintingGrpcClient {
     private final RococoPaintingServiceGrpc.RococoPaintingServiceBlockingStub paintingServiceStub
             = RococoPaintingServiceGrpc.newBlockingStub(channel);
 
+    @Step("Получить все картины со страницы {page}, размер {size}, заголовок '{title}' через gRPC")
     public List<PaintingJson> getAllPaintings(int page, int size, String title) {
         return getAllPaintings(page, size, title, null);
     }
 
+    @Step("Получить все картины со страницы {page}, размер {size}, заголовок '{title}' с сортировкой через gRPC")
     public List<PaintingJson> getAllPaintings(int page, int size, String title, List<String> sort) {
         GetAllPaintingsRequest.Builder requestBuilder = GetAllPaintingsRequest.newBuilder()
                 .setPage(page)
@@ -61,6 +64,7 @@ public class PaintingGrpcClient {
                 .toList();
     }
 
+    @Step("Получить картину по ID '{id}' через gRPC")
     public PaintingJson getPaintingById(UUID id) {
         GetPaintingByIdRequest request = GetPaintingByIdRequest.newBuilder()
                 .setId(id.toString())
@@ -70,10 +74,12 @@ public class PaintingGrpcClient {
         return convertFromGrpcPainting(painting);
     }
 
+    @Step("Получить картины художника '{artistId}' со страницы {page}, размер {size} через gRPC")
     public List<PaintingJson> getPaintingsByArtistId(UUID artistId, int page, int size) {
         return getPaintingsByArtistId(artistId, page, size, null);
     }
 
+    @Step("Получить картины художника '{artistId}' со страницы {page}, размер {size} с сортировкой через gRPC")
     public List<PaintingJson> getPaintingsByArtistId(UUID artistId, int page, int size, List<String> sort) {
         GetPaintingsByArtistIdRequest.Builder requestBuilder = GetPaintingsByArtistIdRequest.newBuilder()
                 .setArtistId(artistId.toString())
@@ -92,6 +98,7 @@ public class PaintingGrpcClient {
                 .toList();
     }
 
+    @Step("Создать картину через gRPC")
     public PaintingJson createPainting(@Nonnull PaintingJson paintingJson) {
         CreatePaintingRequest.Builder requestBuilder = CreatePaintingRequest.newBuilder()
                 .setTitle(paintingJson.title())
@@ -110,6 +117,7 @@ public class PaintingGrpcClient {
         return convertFromGrpcPainting(painting);
     }
 
+    @Step("Обновить картину через gRPC")
     public PaintingJson updatePainting(PaintingJson paintingJson) {
         UpdatePaintingRequest.Builder requestBuilder = UpdatePaintingRequest.newBuilder()
                 .setId(paintingJson.id().toString())
