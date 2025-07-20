@@ -151,10 +151,14 @@ repositories {
 }
 
 test {
+    jvmArgs "-Xmx1024m", "-Xms512m"
     options {
         systemProperties(System.getProperties())
     }
-    testLogging.showStandardStreams = true
-    testLogging.exceptionFormat = 'full'
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+        testLogging.exceptionFormat = 'full'
+    }
     useJUnitPlatform()
 }
