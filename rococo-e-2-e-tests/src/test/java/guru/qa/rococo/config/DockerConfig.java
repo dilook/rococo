@@ -61,10 +61,4 @@ enum DockerConfig implements Config {
         return "painting.rococo.dc";
     }
 
-    @Override
-    public String allureDockerServiceUrl() {
-        final String url = System.getenv( "ALLURE_DOCKER_API");
-        return url == null ? "http://allure:5050" : url;
-    }
-
 }

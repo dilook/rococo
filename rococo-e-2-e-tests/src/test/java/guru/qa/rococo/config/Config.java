@@ -1,7 +1,5 @@
 package guru.qa.rococo.config;
 
-import jakarta.persistence.NamedAttributeNode;
-
 import javax.annotation.Nonnull;
 
 public interface Config {
@@ -55,6 +53,9 @@ public interface Config {
         return 9093;
     }
 
-    String allureDockerServiceUrl();
+    default String allureServiceUrl() {
+        final String url = System.getenv( "ALLURE_DOCKER_API");
+        return url == null ? "http://allure:5050" : url;
+    }
 
 }
